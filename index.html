@@ -3,518 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#020617">
-<title>SavvaLётик — The Savvalyotik Company</title>
-<link rel="icon" href="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png">
+<meta name="theme-color" content="#3e362e">
+<title>SavvaLётик - Главная (архив 2004)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕸️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<!-- Three.js для 3D -->
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Wet+Paint&family=Special+Elite&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#020617;--card:rgba(15,23,42,.6);
-  --line:rgba(56,189,248,.15);--line2:rgba(56,189,248,.4);
-  --txt:#f8fafc;--txt2:#94a3b8;--txt3:#64748b;
-  --blue2:#38bdf8;--glow:rgba(14,165,233,.4);
+  --bg:#2a241e;
+  --bg-dirty:#363028;
+  --card:#423a31;
+  --rust:#8b4513;
+  --rust2:#a0522d;
+  --mold:#4a5d23;
+  --mold2:#556b2f;
+  --txt:#a89f91;
+  --txt2:#7a7168;
+  --txt3:#4d4741;
+  --broken:#5c3a21;
+  --alert:#8b0000;
 }
-html,body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden;min-height:100vh;scroll-behavior:smooth}
-body{position:relative;padding-bottom:110px} /* Отступ для нижнего меню */
+html,body{background:var(--bg);color:var(--txt);font-family:'Courier Prime','Courier New',monospace;overflow-x:hidden;min-height:100vh;position:relative}
+body{padding-bottom:120px;cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text y="20" font-size="20">🔧</text></svg'), auto}
 
-/* ФОН */
-.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--bg)}
-.aurora::before,.aurora::after{content:'';position:absolute;width:90vw;height:90vh;border-radius:50%;filter:blur(100px);opacity:.4;mix-blend-mode:screen}
-.aurora::before{background:radial-gradient(circle,#0ea5e9,transparent 60%);top:-30%;left:-20%;animation:float1 18s ease-in-out infinite}
-.aurora::after{background:radial-gradient(circle,#8b5cf6,transparent 60%);bottom:-30%;right:-20%;animation:float2 22s ease-in-out infinite}
-@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20%,10%) scale(1.2)}}
-@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20%,-15%) scale(1.3)}}
-.container{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+/* ПЕРЕКРЫТИЕ СТАРОГО МОНИТОРА */
+.crt-overlay{position:fixed;inset:0;pointer-events:none;z-index:9998;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.25) 50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06));background-size:100% 4px,6px 100%;opacity:.6;animation:flicker .15s infinite}
+@keyframes flicker{0%{opacity:.6}50%{opacity:.5}100%{opacity:.6}}
+.vignette{position:fixed;inset:0;pointer-events:none;z-index:9997;box-shadow:inset 0 0 150px rgba(0,0,0,0.9)}
 
-/* HEADER */
-.hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(2,6,23,.5);border-bottom:1px solid var(--line)}
-.hd-in{max-width:1120px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:center;}
-.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--txt);cursor:pointer}
-.logo-img{width:44px;height:44px;border-radius:12px;object-fit:cover;background:#020617;box-shadow:0 0 20px var(--glow);border:1px solid var(--line2)}
-.logo-tx{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.5px;line-height:1}
-.logo-tx span{color:var(--blue2)}
-.logo-sub{font-size:9px;color:var(--txt3);font-weight:600;letter-spacing:1.5px;margin-top:4px;text-transform:uppercase}
+/* РЖАВЧИНА И ПЛЕСЕНЬ (ГРЯЗНЫЕ ПЯТНА) */
+.stain{position:fixed;pointer-events:none;z-index:9996;opacity:0.4;mix-blend-mode:multiply;filter:blur(2px)}
+.stain-1{top:10%;left:-5%;width:300px;height:300px;background:radial-gradient(circle,var(--rust) 0%,transparent 70%);transform:rotate(15deg)}
+.stain-2{bottom:20%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,var(--mold) 0%,transparent 70%);transform:rotate(-45deg)}
+.stain-3{top:40%;left:30%;width:200px;height:250px;background:radial-gradient(circle,var(--mold2) 0%,transparent 60%);transform:rotate(70deg)}
+.stain-4{bottom:5%;left:10%;width:150px;height:150px;background:radial-gradient(circle,var(--rust2) 0%,transparent 80%)}
 
-/* НИЖНЕЕ МЕНЮ */
-.bottom-nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:6px;padding:8px;background:rgba(15,23,42,.7);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.6);transition:all .4s}
-.bottom-nav button{position:relative;padding:12px 24px;border-radius:16px;background:transparent;border:none;color:var(--txt2);font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:8px;overflow:hidden}
-.bottom-nav button.on{color:#fff;background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(56,189,248,.3));box-shadow:0 0 20px var(--glow);border:1px solid rgba(56,189,248,.3)}
-@media(max-width:640px){.bottom-nav{width:90%;justify-content:space-between;padding:6px;bottom:16px}.bottom-nav button{padding:10px 12px;font-size:10px;gap:4px;flex-direction:column}.nav-icon{display:block;font-size:18px}}
+/* ПАУТИНА */
+.spiderweb{position:absolute;z-index:9995;pointer-events:none;opacity:0.6}
+.web-tl{top:0;left:0;width:200px;height:200px;background:radial-gradient(circle at 0 0,transparent 40%,rgba(200,200,200,0.2) 40.5%,transparent 41%),repeating-conic-gradient(from 0deg at 0 0,rgba(200,200,200,0.15) 0deg 1deg,transparent 1deg 30deg)}
+.web-br{bottom:0;right:0;width:250px;height:250px;background:repeating-conic-gradient(from 180deg at 100% 100%,rgba(200,200,200,0.15) 0deg 1deg,transparent 1deg 25deg)}
 
-/* TABS */
-.tab{display:none;animation:tabIn .6s cubic-bezier(.16,1,.3,1)}
-.tab.on{display:block}
-@keyframes tabIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+/* МУХА */
+.fly{position:fixed;font-size:24px;z-index:9999;pointer-events:none;transition:all 0.2s;filter:grayscale(1)}
+@keyframes flyAround{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(100px,50px) rotate(45deg)}50%{transform:translate(200px,-20px) rotate(-30deg)}75%{transform:translate(50px,80px) rotate(90deg)}100%{transform:translate(0,0) rotate(0)}}
+.fly-1{top:20%;left:20%;animation:flyAround 15s infinite}
+.fly-2{top:60%;right:30%;animation:flyAround 12s infinite reverse}
 
-/* HERO */
-.hero{padding:30px 0 40px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
-.hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(34px,8vw,76px);font-weight:900;line-height:1.05;letter-spacing:-3px;margin-bottom:20px;background:linear-gradient(120deg,#fff 0%,#bae6fd 40%,#38bdf8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:gradMove 5s ease-in-out infinite}
-@keyframes gradMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.hero p{font-size:clamp(15px,2.2vw,18px);color:var(--txt2);line-height:1.65;max-width:660px;margin:0 auto 30px}
+/* ШАПКА */
+.hd{background:#332b24;border-bottom:3px dashed var(--broken);padding:15px 20px;position:sticky;top:0;z-index:100;box-shadow:0 5px 10px rgba(0,0,0,0.5)}
+.hd-in{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
+.logo-img{width:50px;height:50px;border-radius:2px;object-fit:cover;filter:grayscale(100%) sepia(50%) contrast(150%);border:2px solid var(--rust);transform:rotate(-3deg)}
+.logo-tx{font-family:'Rubik Wet Paint',cursive;font-size:24px;color:var(--rust2);text-shadow:2px 2px 0 #000;letter-spacing:2px}
+.logo-sub{font-size:10px;color:var(--mold2);font-family:'Special Elite',cursive;margin-top:5px}
+.warning-tape{background:repeating-linear-gradient(45deg,#ffcc00,#ffcc00 10px,#000 10px,#000 20px);color:#000;font-weight:bold;padding:5px;text-align:center;font-size:12px;transform:rotate(1deg);margin-top:10px;border:1px solid #000}
 
-/* ===== 3D ГЛОБУС ===== */
-.globe-section{width:100%;display:flex;flex-direction:column;align-items:center;margin-bottom:40px}
-.globe-controls{display:flex;justify-content:center;gap:10px;margin-bottom:12px}
-.globe-btn{padding:8px 16px;border-radius:10px;background:rgba(56,189,248,.1);border:1px solid var(--line2);color:var(--blue2);font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
-.globe-btn:hover{background:rgba(56,189,248,.2)}
+/* КОНТЕНТ */
+.container{max-width:900px;margin:0 auto;padding:20px;position:relative;z-index:1}
+.hero{margin-top:30px;text-align:center;background:var(--bg-dirty);padding:30px 20px;border:2px solid var(--broken);border-radius:5px;position:relative;box-shadow:inset 0 0 50px rgba(0,0,0,0.8)}
+.hero h1{font-family:'Rubik Wet Paint',cursive;font-size:clamp(30px,6vw,50px);color:var(--txt);text-shadow:3px 3px 0 #000, -1px -1px 0 var(--mold);margin-bottom:15px;line-height:1.1;transform:skewX(-5deg)}
+.hero p{font-family:'Special Elite',cursive;font-size:16px;color:var(--txt2);margin-bottom:20px;line-height:1.5}
 
-.globe-wrapper{width:100%;max-width:600px;height:400px;position:relative;border-radius:24px;overflow:hidden;background:#020617;border:1px solid var(--line2);box-shadow:0 20px 50px rgba(0,0,0,.5);cursor:grab;transition:all .3s}
-.globe-wrapper:active{cursor:grabbing}
-#globe-canvas{width:100%;height:100%;display:block}
-.globe-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--txt3);font-weight:600;background:rgba(2,6,23,.7);padding:6px 14px;border-radius:12px;pointer-events:none;backdrop-filter:blur(10px);border:1px solid var(--line);white-space:nowrap}
+/* КРИВАЯ КНОПКА */
+.btn-rust{display:inline-block;padding:12px 24px;background:#5c4a3d;border:2px solid #2e2118;color:#d4c5b0;font-family:'Courier Prime',monospace;font-weight:bold;font-size:14px;text-decoration:none;text-transform:uppercase;position:relative;cursor:pointer;box-shadow:4px 4px 0 #1a1410;transform:rotate(-2deg);transition:all 0.1s}
+.btn-rust:active{transform:translate(4px,4px) rotate(-2deg);box-shadow:0 0 0 #1a1410}
+.btn-rust::after{content:'';position:absolute;top:-5px;right:-5px;width:15px;height:15px;background:var(--rust);border-radius:50%;filter:blur(2px)}
 
-/* На весь экран */
-.globe-wrapper.fullscreen{position:fixed;inset:0;max-width:none;height:100vh;border-radius:0;z-index:9999;border:none;box-shadow:none}
-.globe-wrapper.fullscreen .globe-hint{display:none}
+/* ГЛОБУС (ПОБИТЫЙ) */
+.globe-wrapper{width:100%;height:350px;background:#111;border:5px solid var(--broken);border-radius:8px;position:relative;overflow:hidden;margin:30px auto;box-shadow:inset 0 0 30px #000;cursor:crosshair}
+.globe-wrapper::before{content:'⚠️ МОНИТОР ПОВРЕЖДЁН ⚠️';position:absolute;top:10px;left:50%;transform:translateX(-50%);color:var(--alert);font-family:'Special Elite',cursive;font-size:14px;z-index:10;opacity:0.7;pointer-events:none;white-space:nowrap}
+#globe-canvas{width:100%;height:100%;display:block;filter:sepia(80%) hue-rotate(-30deg) contrast(150%) brightness(0.7);opacity:0.8}
+.dead-pixel{position:absolute;width:3px;height:3px;background:#fff;z-index:2;opacity:0.8}
 
-/* Подсказка при наведении на город */
-.city-tooltip{position:absolute;background:rgba(2,6,23,.9);border:1px solid var(--blue2);color:#fff;padding:8px 12px;border-radius:8px;font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;white-space:nowrap;box-shadow:0 4px 15px rgba(0,0,0,.5);transform:translate(-50%,-100%);margin-top:-10px;display:flex;flex-direction:column;align-items:center}
-.city-tooltip::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-width:5px 5px 0;border-style:solid;border-color:var(--blue2) transparent transparent transparent}
+/* КАРТОЧКИ */
+.section-title{font-family:'Rubik Wet Paint',cursive;font-size:28px;color:var(--rust2);text-shadow:2px 2px 0 #000;margin:40px 0 20px;text-align:center}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.comp{background:var(--card);border:2px solid #2e2118;padding:20px;position:relative;transform:rotate(1deg);box-shadow:5px 5px 15px rgba(0,0,0,0.5);transition:transform 0.2s}
+.comp:nth-child(even){transform:rotate(-1.5deg)}
+.comp:hover{transform:rotate(0) scale(1.02)}
+.comp::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:60px;height:20px;background:rgba(180,180,150,0.4);border:1px solid rgba(0,0,0,0.2);backdrop-filter:blur(2px);z-index:2}
+.comp-ic{width:100%;height:120px;object-fit:cover;filter:grayscale(100%) sepia(50%) contrast(120%);border:2px solid #000;margin-bottom:15px;opacity:0.8}
+.comp h3{font-family:'Special Elite',cursive;font-size:20px;color:var(--txt);margin-bottom:10px}
+.comp p{font-size:14px;color:var(--txt2);line-height:1.5}
 
-/* STATS & SECTIONS */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:60px;width:100%;max-width:900px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;backdrop-filter:blur(20px);transition:all .4s}
-.stat:hover{transform:translateY(-6px);border-color:var(--line2);box-shadow:0 20px 50px rgba(14,165,233,.2)}
-.stat-n{font-family:'Unbounded',sans-serif;font-size:clamp(30px,4.5vw,44px);font-weight:900;background:linear-gradient(120deg,#fff,#38bdf8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
-.stat-l{font-size:12px;color:var(--txt2);line-height:1.4}
-@media(max-width:640px){.stats{grid-template-columns:1fr}}
+/* ПРОВОДА */
+.wire{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9994;opacity:0.6}
+.wire-svg{width:100%;height:100%}
 
-.section{padding:40px 0}
-.section-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap}
-.section-title{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;background:linear-gradient(120deg,#fff,#bae6fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.section-title span{color:var(--blue2);-webkit-text-fill-color:var(--blue2)}
+/* ПОДВАЛ */
+.footer{text-align:center;margin-top:50px;padding:20px;border-top:3px dashed var(--broken);background:#221c16}
+.footer p{font-size:12px;color:var(--txt3);font-family:'Special Elite',cursive;margin-bottom:10px}
+.visitor-counter{display:inline-block;background:#000;color:#0f0;font-family:monospace;padding:5px 10px;border:1px solid #333;font-size:14px;letter-spacing:2px}
 
-.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.comp{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:30px;backdrop-filter:blur(20px);transition:all .4s;position:relative;overflow:hidden}
-.comp:hover{transform:translateY(-8px);border-color:var(--line2);box-shadow:0 30px 70px rgba(14,165,233,.25)}
-.comp-ic{width:80px;height:80px;border-radius:20px;object-fit:cover;margin-bottom:20px;border:1px solid var(--line2);background:#020617;box-shadow:0 0 20px rgba(56,189,248,.15)}
-.comp h3{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:800;margin-bottom:10px;color:var(--txt)}
-.comp p{font-size:13.5px;color:var(--txt2);line-height:1.6;margin-bottom:16px}
+/* ЭФФЕКТ ТРЯСКИ */
+@keyframes shake{0%,100%{transform:translate(0,0) rotate(0)}10%,30%,50%,70%,90%{transform:translate(-2px,2px) rotate(-1deg)}20%,40%,60%,80%{transform:translate(2px,-2px) rotate(1deg)}}
+.shake{animation:shake 0.5s infinite}
 
-.about-block{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:40px;backdrop-filter:blur(20px)}
-.about-block p{font-size:15px;line-height:1.8;color:var(--txt2);margin-bottom:16px}
-.about-block b{color:var(--txt);text-shadow:0 0 20px var(--glow)}
+/* АНИМАЦИЯ ОТВАЛИВАНИЯ */
+@keyframes fallOff{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(45deg);opacity:0}}
+.falling{animation:fallOff 2s forwards}
 
-.deposit-block{background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(139,92,246,.1));border:1px solid var(--line2);border-radius:28px;padding:50px 30px;text-align:center;backdrop-filter:blur(20px)}
-.deposit-block h2{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:14px}
-.deposit-block h2 span{color:#fbbf24;}
-.btn-tg{background:linear-gradient(135deg,#38bdf8,#1d98dc);color:#fff;box-shadow:0 0 30px rgba(56,189,248,.4);padding:16px 28px;border-radius:16px;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:10px;text-decoration:none;transition:all .3s}
-
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.contact{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;text-decoration:none;color:var(--txt);transition:all .35s;backdrop-filter:blur(20px)}
-.contact:hover{transform:translateY(-4px);border-color:var(--line2);box-shadow:0 15px 40px rgba(14,165,233,.2)}
-.contact-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.contact-ic.tg{background:linear-gradient(135deg,#38bdf8,#1d98dc);color:#fff}
-.contact-ic.tw{background:linear-gradient(135deg,#a970ff,#9146ff);color:#fff}
-
-.footer{text-align:center;padding:40px 20px 24px;border-top:1px solid var(--line);margin-top:40px;background:linear-gradient(180deg,transparent,rgba(14,165,233,.05))}
-.footer-logo{width:56px;height:56px;border-radius:14px;object-fit:cover;margin-bottom:16px;box-shadow:0 0 25px var(--glow)}
-.footer-tx{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--txt)}
-.footer-tx span{color:var(--blue2)}
-
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}
-.reveal.in{opacity:1;transform:translateY(0)}
+/* БИТЫЕ БУКВЫ */
+.glitch-text{position:relative;display:inline-block}
+.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;opacity:0.8}
+.glitch-text::before{color:var(--mold);z-index:-1;animation:glitch1 2s infinite}
+.glitch-text::after{color:var(--rust);z-index:-2;animation:glitch2 2.5s infinite}
+@keyframes glitch1{0%,100%{transform:translate(0,0)}20%{transform:translate(-2px,1px)}40%{transform:translate(1px,-1px)}60%{transform:translate(2px,2px)}}
+@keyframes glitch2{0%,100%{transform:translate(0,0)}30%{transform:translate(2px,-2px)}60%{transform:translate(-1px,1px)}}
 </style>
 </head>
-<body>
+<body class="shake-on-tap">
 
-<div class="aurora"></div>
+<div class="stain stain-1"></div>
+<div class="stain stain-2"></div>
+<div class="stain stain-3"></div>
+<div class="stain stain-4"></div>
+
+<div class="spiderweb web-tl"></div>
+<div class="spiderweb web-br"></div>
+<div class="fly fly-1">🪰</div>
+<div class="fly fly-2">🪰</div>
+
+<div class="crt-overlay"></div>
+<div class="vignette"></div>
 
 <header class="hd">
   <div class="hd-in">
-    <a class="logo" onclick="showTab('home')">
-      <img class="logo-img" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
-      <div>
-        <div class="logo-tx">Savva<span>Lётик</span></div>
-        <div class="logo-sub">The Savvalyotik Co.</div>
-      </div>
-    </a>
+    <img class="logo-img" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
+    <div>
+      <div class="logo-tx glitch-text" data-text="SavvaLётик">SavvaLётик</div>
+      <div class="logo-sub">(архивная копия 2004 г.)</div>
+    </div>
   </div>
+  <div class="warning-tape">ВНИМАНИЕ! САЙТ РАБОТАЕТ В ТЕСТОВОМ РЕЖИМЕ С 2004 ГОДА</div>
 </header>
-
-<nav class="bottom-nav">
-  <button data-tab="home" class="on" onclick="showTab('home')"><span class="nav-icon">🏠</span><span class="nav-text">Главная</span></button>
-  <button data-tab="companies" onclick="showTab('companies')"><span class="nav-icon">🏢</span><span class="nav-text">Компании</span></button>
-  <button data-tab="deposits" onclick="showTab('deposits')"><span class="nav-icon">💰</span><span class="nav-text">Вклады</span></button>
-  <button data-tab="contacts" onclick="showTab('contacts')"><span class="nav-icon">📞</span><span class="nav-text">Контакты</span></button>
-</nav>
 
 <main class="container">
 
-<section class="tab on" id="tab-home">
   <div class="hero">
-    <h1>Будущее<br>начинается <span style="color:var(--blue2);-webkit-text-fill-color:var(--blue2);text-shadow:0 0 40px var(--glow)">здесь</span></h1>
-    <p>Международный холдинг с штаб-квартирой на Багамских островах. Мы создаём компании, которые меняют правила игры — от финтеха до цифрового искусства.</p>
+    <h1 class="glitch-text" data-text="Сайт временно не работает">Сайт временно не работает</h1>
+    <p>Мы переехали на новый сервер еще в 2008 году, но забыли включить. Сейчас админ (Вася) пытается найти причину сбоя.</p>
     
-    <!-- ГЛОБУС -->
-    <div class="globe-section">
-      <div class="globe-controls">
-        <button class="globe-btn" onclick="toggleFullscreenGlobe()" id="fsBtn">🔍 На весь экран</button>
-      </div>
-      <div class="globe-wrapper" id="globeWrapper">
-        <canvas id="globe-canvas"></canvas>
-        <div class="globe-hint">🖐 Один палец — крутить · Два пальца — зум</div>
-        <div class="city-tooltip" id="cityTooltip"></div>
-      </div>
-    </div>
+    <button class="btn-rust" onclick="rustSound();fallElement(this)">Починить сайт (не нажимать)</button>
+    <br><br>
+    <p style="font-size:12px;color:var(--rust)">*Нажимать на кнопку бесполезно, она прикручена на изоленту</p>
+  </div>
 
-    <div class="stats">
-      <div class="stat reveal">
-        <div class="stat-n">61%</div>
-        <div class="stat-l">акций у основателя — Баташана Саввы</div>
-      </div>
-      <div class="stat reveal">
-        <div class="stat-n">30%</div>
-        <div class="stat-l">у Соколова Андрея, СЕО ТраляЛя Банка</div>
-      </div>
-      <div class="stat reveal">
-        <div class="stat-n">9%</div>
-        <div class="stat-l">у Арбатова Леона, главного технолога</div>
-      </div>
+  <!-- ГЛОБУС -->
+  <div class="globe-wrapper" id="globeWrapper">
+    <canvas id="globe-canvas"></canvas>
+    <div class="dead-pixel" style="top:20%;left:30%"></div>
+    <div class="dead-pixel" style="top:70%;left:80%"></div>
+    <div class="dead-pixel" style="top:40%;left:60%"></div>
+    <div class="dead-pixel" style="top:80%;left:20%"></div>
+  </div>
+  <p style="text-align:center;font-size:12px;color:var(--mold2);margin-top:-20px">Спутниковый снимок Земли (качество 144p)</p>
+
+  <h2 class="section-title">Дочерние компании</h2>
+  <div class="comp-grid">
+    <div class="comp">
+      <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7436.jpeg" alt="Банк">
+      <h3>ТраляЛя Банк</h3>
+      <p>Банк закрыт на реконструкцию. Валюту не меняем (сломалась касса).</p>
+    </div>
+    <div class="comp">
+      <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7440.jpeg" alt="Кораблик">
+      <h3>S-Ship</h3>
+      <p>Бумажные кораблики размокли под дождем. Сейчас сушим.</p>
+    </div>
+    <div class="comp">
+      <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7442.jpeg" alt="Книги">
+      <h3>S-Books</h3>
+      <p>Книги съела моль. Остались только обложки.</p>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-h"><h2 class="section-title">О <span>компании</span></h2></div>
-    <div class="about-block reveal">
-      <p><b>SavvaLётик</b> был основан <b>1 мая 2023 года</b> Баташаном Саввой. Сегодня Баташану принадлежит <b>61% акций</b> компании.</p>
-      <p>Базируется SavvaLётик на <b>Багамских островах</b> и на него не действуют санкции. СЕО компании — <b>Баташан Савва Федорович</b>.</p>
-      <p>СЕО ТраляЛя Банка — <b>Соколов Андрей Борисович</b> (30% акций). Главный технолог — <b>Арбатов Леон Петрович</b> (9% акций).</p>
-    </div>
-  </div>
-</section>
-
-<section class="tab" id="tab-companies">
-  <div class="section" style="padding-top:40px">
-    <div class="section-h"><h2 class="section-title">Наши <span>компании</span></h2></div>
-    <div class="comp-grid">
-      <div class="comp reveal">
-        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7436.jpeg" alt="ТраляЛя Банк">
-        <h3>ТраляЛя Банк</h3>
-        <p>Банк, основанный 14 апреля 2022 года. Производит валюту — ТраляЛя Доллар.</p>
-      </div>
-      <div class="comp reveal">
-        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7440.jpeg" alt="S-Ship">
-        <h3>S-Ship</h3>
-        <p>Производство бумажных корабликов. Маленькие, но очень важные.</p>
-      </div>
-      <div class="comp reveal">
-        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7442.jpeg" alt="S-Books">
-        <h3>S-Books</h3>
-        <p>Издательство книг и картин. Для тех, кто любит бумагу.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="tab" id="tab-deposits">
-  <div class="section" style="padding-top:40px">
-    <div class="deposit-block reveal">
-      <h2>В <span>ТраляЛя Банке</span><br>можно открывать вклады!</h2>
-      <p>Напишите нам в Telegram — и мы откроем вклад за пару минут.</p>
-      <a class="btn-tg" href="https://t.me/yeltryasoguz" target="_blank">Написать в Telegram</a>
-    </div>
-  </div>
-</section>
-
-<section class="tab" id="tab-contacts">
-  <div class="section" style="padding-top:40px">
-    <div class="section-h"><h2 class="section-title">Связаться <span>с нами</span></h2></div>
-    <div class="contact-grid">
-      <a class="contact reveal" href="https://t.me/savvalyotik" target="_blank">
-        <div class="contact-ic tg">✈️</div>
-        <div><div class="t">Telegram-канал</div><div class="s">@savvalyotik</div></div>
-      </a>
-      <a class="contact reveal" href="https://t.me/yeltryasoguz" target="_blank">
-        <div class="contact-ic tg">✈️</div>
-        <div><div class="t">Вклады (Telegram)</div><div class="s">@yeltryasoguz</div></div>
-      </a>
-      <a class="contact reveal" href="https://www.twitch.tv/savva075" target="_blank">
-        <div class="contact-ic tw">🎮</div>
-        <div><div class="t">Twitch</div><div class="s">@savva075</div></div>
-      </a>
-    </div>
-  </div>
-</section>
+  <h2 class="section-title">Контакты (связь потеряна)</h2>
+  <p style="text-align:center;color:var(--txt2);font-size:14px">Почтовый голубь сдох. Факс зажевало. Телеграм-канал удален за неуплату.</p>
 
 </main>
 
 <footer class="footer">
-  <img class="footer-logo" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
-  <div class="footer-tx">Savva<span>Lётик</span> © 2023–2026</div>
+  <p>© 2001-2004 SavvaLётик. Все права защищены медведем.</p>
+  <p>Вы посетитель номер:</p>
+  <div class="visitor-counter">000 00 1</div>
 </footer>
 
+<!-- SVG ПРОВОДА ПОВЕРХ ЭКРАНА -->
+<div class="wire">
+  <svg class="wire-svg" preserveAspectRatio="none">
+    <path d="M0,0 Q 200,100 100,300 T 300,600" stroke="#222" stroke-width="3" fill="none"/>
+    <path d="M100%,0 Q 80%,20% 90%,50% T 70%,100%" stroke="#111" stroke-width="4" fill="none"/>
+    <circle cx="100" cy="300" r="4" fill="#5c3a21"/>
+    <circle cx="90%" cy="50%" r="5" fill="#222"/>
+  </svg>
+</div>
+
 <script>
-function showTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.getElementById('tab-'+name).classList.add('on');
-  document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
-  window.scrollTo({top:0,behavior:'smooth'});
-  setTimeout(revealCheck,100);
-  if(name==='home') setTimeout(resizeGlobe, 50);
+// ==========================================
+// ЗВУК СКРИПА (WEB AUDIO API)
+// ==========================================
+let audioCtx;
+function rustSound() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  
+  osc.type = 'sawtooth'; // Звук пилы (скрип)
+  osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+  
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.2);
 }
-function revealCheck(){document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight-80)el.classList.add('in')})}
-window.addEventListener('scroll',revealCheck,{passive:true});
-window.addEventListener('resize',revealCheck);
-setTimeout(revealCheck,200);
+
+// Добавляем скрип на все клики
+document.addEventListener('click', () => {
+  if (!audioCtx) rustSound();
+});
 
 // ==========================================
-// 3D ГЛОБУС С ТЕКСТУРАМИ И УПРАВЛЕНИЕМ
+// ЭФФЕКТ ПАДЕНИЯ (ОТВАЛИВАНИЯ)
 // ==========================================
-const cities = [
-  { name: 'Москва', lat: 55.75, lon: 37.61 },
-  { name: 'Санкт-Петербург', lat: 59.93, lon: 30.33 },
-  { name: 'Абу-Даби', lat: 24.45, lon: 54.37 },
-  { name: 'Лондон', lat: 51.50, lon: -0.12 },
-  { name: 'Сан-Франциско', lat: 37.77, lon: -122.41 },
-  { name: 'Вашингтон', lat: 38.90, lon: -77.03 },
-  { name: 'Ереван', lat: 40.18, lon: 44.51 },
-  { name: 'Токио', lat: 35.68, lon: 139.69 },
-  { name: 'Сеул', lat: 37.56, lon: 126.97 },
-  { name: 'Тайнань', lat: 22.99, lon: 120.21 },
-  { name: 'Берлин', lat: 52.52, lon: 13.40 },
-  { name: 'Глазго', lat: 55.86, lon: -4.25 },
-  { name: 'Париж', lat: 48.85, lon: 2.35 },
-  { name: 'Красноярск', lat: 56.01, lon: 92.85 },
-  { name: 'Киев', lat: 50.45, lon: 30.52 },
-  { name: 'Минск', lat: 53.90, lon: 27.56 }
-];
+function fallElement(el) {
+  const clone = el.cloneNode(true);
+  clone.classList.add('falling');
+  clone.style.position = 'fixed';
+  clone.style.left = el.getBoundingClientRect().left + 'px';
+  clone.style.top = el.getBoundingClientRect().top + 'px';
+  clone.style.zIndex = 10000;
+  document.body.appendChild(clone);
+  setTimeout(() => clone.remove(), 2000);
+}
 
-let scene, camera, renderer, globeGroup, raycaster, mouse;
-let isDragging = false, prevPos = {x:0, y:0};
-let targetZoom = 250, currentZoom = 250;
-let cityMarkers = [];
+// ==========================================
+// ТРЯСКА ЭКРАНА ПРИ ТАПЕ
+// ==========================================
+document.addEventListener('pointerdown', (e) => {
+  if (e.target.tagName !== 'INPUT') {
+    document.body.style.animation = 'shake 0.2s';
+    setTimeout(() => document.body.style.animation = '', 200);
+  }
+});
 
+// ==========================================
+// 3D ГЛОБУС (ПОБИТЫЙ)
+// ==========================================
 function initGlobe() {
   const canvas = document.getElementById('globe-canvas');
   const wrapper = document.getElementById('globeWrapper');
   
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
   camera.position.z = 250;
 
-  renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
   renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(1); // Низкое качество (пиксели)
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  // Тусклый свет
+  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+  const dirLight = new THREE.DirectionalLight(0xffeeaa, 0.5);
   dirLight.position.set(5, 3, 5);
   scene.add(dirLight);
 
-  globeGroup = new THREE.Group();
+  const globeGroup = new THREE.Group();
   scene.add(globeGroup);
 
-  // 1. ЗАГРУЗКА ТЕКСТУРЫ ЗЕМЛИ
+  // Текстура
   const textureLoader = new THREE.TextureLoader();
-  // Используем надежную текстуру (карта мира с океанами)
   const earthMap = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
   
   const earthMat = new THREE.MeshPhongMaterial({
     map: earthMap,
-    shininess: 15,
-    specular: new THREE.Color(0x333333)
+    shininess: 5,
   });
-  const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(100, 64, 64), earthMat);
+  const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(100, 32, 32), earthMat); // Меньше полигонов
   globeGroup.add(earthMesh);
 
-  // Свечение вокруг (атмосфера)
-  const atmoMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.15, side: THREE.BackSide });
-  const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(105, 32, 32), atmoMat);
-  globeGroup.add(atmosphere);
-
-  // 2. ТОЧКИ ГОРОДОВ
-  const dotGeo = new THREE.SphereGeometry(1.2, 16, 16);
-  const dotMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
-  const glowMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.3 });
-
+  // Точки
+  const cities = [
+    { name: 'Москва', lat: 55.75, lon: 37.61 },
+    { name: 'Париж', lat: 48.85, lon: 2.35 },
+    { name: 'Токио', lat: 35.68, lon: 139.69 }
+  ];
+  const dotMat = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Красные (аварийные)
+  
   cities.forEach(city => {
     const phi = (90 - city.lat) * (Math.PI / 180);
     const theta = (city.lon + 180) * (Math.PI / 180);
     const x = -(100 * Math.sin(phi) * Math.cos(theta));
     const z = (100 * Math.sin(phi) * Math.sin(theta));
     const y = (100 * Math.cos(phi));
-
-    const dot = new THREE.Mesh(dotGeo, dotMat);
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(2, 8, 8), dotMat);
     dot.position.set(x, y, z);
-    dot.userData = city; // Сохраняем данные для тултипа
     globeGroup.add(dot);
-    cityMarkers.push(dot);
-
-    // Пульсирующее свечение
-    const glow = new THREE.Mesh(new THREE.SphereGeometry(2.5, 16, 16), glowMat.clone());
-    glow.position.set(x, y, z);
-    globeGroup.add(glow);
-    dot.userData.glow = glow;
   });
 
-  // 3. УПРАВЛЕНИЕ (МЫШЬ / ПАЛЕЦ)
-  const wrapperEl = document.getElementById('globeWrapper');
-  let pointerStartDist = 0;
-  let initialZoom = 250;
-
-  wrapperEl.addEventListener('pointerdown', (e) => {
-    isDragging = true;
-    prevPos = { x: e.clientX, y: e.clientY };
-    wrapperEl.style.cursor = 'grabbing';
-    // Для тултипа
-    checkHover(e);
-  });
-
-  wrapperEl.addEventListener('pointermove', (e) => {
+  // Управление
+  let isDragging = false;
+  let prevPos = { x: 0, y: 0 };
+  
+  wrapper.addEventListener('pointerdown', (e) => { isDragging = true; prevPos = { x: e.clientX, y: e.clientY }; rustSound(); });
+  wrapper.addEventListener('pointermove', (e) => {
     if (isDragging) {
-      const delta = {
-        x: e.clientX - prevPos.x,
-        y: e.clientY - prevPos.y
-      };
-      // Вращение
-      globeGroup.rotation.y += delta.x * 0.005;
-      globeGroup.rotation.x += delta.y * 0.005;
+      globeGroup.rotation.y += (e.clientX - prevPos.x) * 0.005;
+      globeGroup.rotation.x += (e.clientY - prevPos.y) * 0.005;
       prevPos = { x: e.clientX, y: e.clientY };
     }
-    checkHover(e);
   });
+  wrapper.addEventListener('pointerup', () => isDragging = false);
 
-  wrapperEl.addEventListener('pointerup', () => {
-    isDragging = false;
-    wrapperEl.style.cursor = 'grab';
-  });
-  wrapperEl.addEventListener('pointerleave', () => {
-    isDragging = false;
-    wrapperEl.style.cursor = 'grab';
-    document.getElementById('cityTooltip').style.opacity = 0;
-  });
-
-  // ЗУМ (КОЛЕСИКОМ)
-  wrapperEl.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    targetZoom += e.deltaY * 0.4;
-    targetZoom = Math.max(110, Math.min(400, targetZoom));
-  }, { passive: false });
-
-  // ЗУМ (ДВУМЯ ПАЛЬЦАМИ НА ТЕЛЕФОНЕ)
-  wrapperEl.addEventListener('touchstart', (e) => {
-    if (e.touches.length === 2) {
-      pointerStartDist = Math.hypot(
-        e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
-      );
-      initialZoom = targetZoom;
-    }
-  }, { passive: false });
-
-  wrapperEl.addEventListener('touchmove', (e) => {
-    if (e.touches.length === 2) {
-      e.preventDefault(); // Блокируем скролл страницы
-      const dist = Math.hypot(
-        e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
-      );
-      const delta = pointerStartDist - dist;
-      targetZoom = initialZoom - delta * 1.5;
-      targetZoom = Math.max(110, Math.min(400, targetZoom));
-    }
-  }, { passive: false });
-
-  // Raycaster для подсказок городов
-  raycaster = new THREE.Raycaster();
-  mouse = new THREE.Vector2();
-
-  // Анимация
+  // Анимация (с рывками)
+  let frame = 0;
   function animate() {
     requestAnimationFrame(animate);
     
-    // Автовращение, если не трогаем
-    if (!isDragging) {
-      globeGroup.rotation.y += 0.001;
+    // Глюк: глобус дергается каждые 2 секунды
+    if (frame % 120 === 0) {
+      globeGroup.rotation.y += 0.1;
     }
+    frame++;
 
-    // Пульсация точек
-    const time = Date.now() * 0.003;
-    cityMarkers.forEach(marker => {
-      if (marker.userData.glow) {
-        marker.userData.glow.scale.setScalar(1 + Math.sin(time + marker.position.x) * 0.3);
-      }
-    });
-
-    // Плавный зум
-    currentZoom += (targetZoom - currentZoom) * 0.1;
-    camera.position.z = currentZoom;
+    if (!isDragging) globeGroup.rotation.y += 0.002;
 
     renderer.render(scene, camera);
   }
   animate();
-
-  window.addEventListener('resize', resizeGlobe);
 }
 
-// Проверка наведения на город (для тултипа)
-function checkHover(e) {
-  if (!raycaster || !camera) return;
-  const wrapper = document.getElementById('globeWrapper');
-  const rect = wrapper.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-  const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-  
-  mouse.x = x; mouse.y = y;
-  raycaster.setFromCamera(mouse, camera);
-  
-  const intersects = raycaster.intersectObjects(cityMarkers);
-  const tooltip = document.getElementById('cityTooltip');
-  
-  if (intersects.length > 0) {
-    const hit = intersects[0].object;
-    const cityData = hit.userData;
-    tooltip.textContent = cityData.name;
-    tooltip.style.left = (e.clientX - rect.left) + 'px';
-    tooltip.style.top = (e.clientY - rect.top) + 'px';
-    tooltip.style.opacity = 1;
-  } else {
-    tooltip.style.opacity = 0;
-  }
-}
-
-// Функция для полноэкранного режима
-let isFullscreen = false;
-function toggleFullscreenGlobe() {
-  const wrapper = document.getElementById('globeWrapper');
-  const btn = document.getElementById('fsBtn');
-  isFullscreen = !isFullscreen;
-  
-  if (isFullscreen) {
-    wrapper.classList.add('fullscreen');
-    btn.innerHTML = '❌ Свернуть';
-    // Тултип на весь экран не должен перекрываться
-    document.getElementById('cityTooltip').style.zIndex = 10000;
-  } else {
-    wrapper.classList.remove('fullscreen');
-    btn.innerHTML = '🔍 На весь экран';
-  }
-  // Даем время на перестройку DOM
-  setTimeout(resizeGlobe, 100);
-}
-
-function resizeGlobe() {
-  if (!renderer || !camera) return;
-  const wrapper = document.getElementById('globeWrapper');
-  const w = wrapper.clientWidth;
-  const h = wrapper.clientHeight;
-  if (w === 0 || h === 0) return;
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
-}
-
-// Запуск при загрузке
 window.addEventListener('load', () => {
-  // Показываем глобус после загрузки страницы
-  setTimeout(initGlobe, 100);
+  setTimeout(initGlobe, 500);
 });
 </script>
 </body>
