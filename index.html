@@ -3,350 +3,496 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#3e362e">
-<title>SavvaLётик - Главная (архив 2004)</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕸️</text></svg>">
+<meta name="theme-color" content="#020617">
+<title>SavvaLётик — The Savvalyotik Company</title>
+<link rel="icon" href="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Wet+Paint&family=Special+Elite&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#2a241e; --bg-dirty:#363028; --card:#423a31;
-  --rust:#8b4513; --rust2:#a0522d; --mold:#4a5d23; --mold2:#556b2f;
-  --txt:#a89f91; --txt2:#7a7168; --txt3:#4d4741; --broken:#5c3a21; --alert:#8b0000;
+  --bg:#020617;--bg2:#050a1f;--card:rgba(15,23,42,.6);
+  --line:rgba(56,189,248,.15);--line2:rgba(56,189,248,.4);
+  --txt:#f8fafc;--txt2:#94a3b8;--txt3:#64748b;
+  --blue:#0ea5e9;--blue2:#38bdf8;
+  --glow:rgba(14,165,233,.4);--glow-strong:rgba(56,189,248,.7);
 }
-html,body{background:var(--bg);color:var(--txt);font-family:'Courier Prime','Courier New',monospace;overflow-x:hidden;min-height:100vh;position:relative}
-body{padding-bottom:120px}
+html,body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;scroll-behavior:smooth}
+body{position:relative;padding-bottom:110px}
 
-/* ЭФФЕКТЫ СТАРОГО МОНИТОРА */
-.crt-overlay{position:fixed;inset:0;pointer-events:none;z-index:9998;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.25) 50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06));background-size:100% 4px,6px 100%;opacity:.6;animation:flicker .15s infinite}
-@keyframes flicker{0%{opacity:.6}50%{opacity:.5}100%{opacity:.6}}
-.vignette{position:fixed;inset:0;pointer-events:none;z-index:9997;box-shadow:inset 0 0 150px rgba(0,0,0,0.9)}
+/* ФОН */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--bg)}
+.aurora::before,.aurora::after{content:'';position:absolute;width:90vw;height:90vh;border-radius:50%;filter:blur(100px);opacity:.4;mix-blend-mode:screen}
+.aurora::before{background:radial-gradient(circle,#0ea5e9,transparent 60%);top:-30%;left:-20%;animation:float1 18s ease-in-out infinite}
+.aurora::after{background:radial-gradient(circle,#8b5cf6,transparent 60%);bottom:-30%;right:-20%;animation:float2 22s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20%,10%) scale(1.2)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20%,-15%) scale(1.3)}}
+.container{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
 
-/* ТАЙМЕР УНИЧТОЖЕНИЯ */
-.destruction-timer{position:fixed;top:0;left:0;width:100%;background:rgba(139,0,0,0.9);color:#fff;text-align:center;font-family:'Courier Prime',monospace;font-size:18px;font-weight:bold;padding:10px;z-index:10000;box-shadow:0 5px 15px rgba(0,0,0,0.8);text-shadow:0 0 10px #ff0000;letter-spacing:2px;animation:timerPulse 1s infinite}
-@keyframes timerPulse{0%,100%{background:rgba(139,0,0,0.9)}50%{background:rgba(200,0,0,1)}}
+/* HEADER */
+.hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);background:rgba(2,6,23,.5);border-bottom:1px solid var(--line)}
+.hd-in{max-width:1120px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:center;}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--txt);cursor:pointer}
+.logo-img{width:44px;height:44px;border-radius:12px;object-fit:cover;background:#020617;box-shadow:0 0 20px var(--glow);border:1px solid var(--line2)}
+.logo-tx{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.logo-tx span{color:var(--blue2)}
+.logo-sub{font-size:9px;color:var(--txt3);font-weight:600;letter-spacing:1.5px;margin-top:4px;text-transform:uppercase}
 
-/* ГРЯЗНЫЕ ПЯТНА */
-.stain{position:fixed;pointer-events:none;z-index:9996;opacity:0.4;mix-blend-mode:multiply;filter:blur(2px)}
-.stain-1{top:10%;left:-5%;width:300px;height:300px;background:radial-gradient(circle,var(--rust) 0%,transparent 70%);transform:rotate(15deg)}
-.stain-2{bottom:20%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,var(--mold) 0%,transparent 70%);transform:rotate(-45deg)}
-.stain-3{top:40%;left:30%;width:200px;height:250px;background:radial-gradient(circle,var(--mold2) 0%,transparent 60%);transform:rotate(70deg)}
+/* НИЖНЕЕ МЕНЮ */
+.bottom-nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:6px;padding:8px;background:rgba(15,23,42,.7);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.6);transition:all .4s}
+.bottom-nav button{position:relative;padding:12px 24px;border-radius:16px;background:transparent;border:none;color:var(--txt2);font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:8px;overflow:hidden}
+.bottom-nav button.on{color:#fff;background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(56,189,248,.3));box-shadow:0 0 20px var(--glow);border:1px solid rgba(56,189,248,.3)}
+@media(max-width:640px){.bottom-nav{width:90%;justify-content:space-between;padding:6px;bottom:16px}.bottom-nav button{padding:10px 12px;font-size:10px;gap:4px;flex-direction:column}.nav-icon{display:block;font-size:18px}}
 
-/* ПАУТИНА И МУХИ */
-.spiderweb{position:absolute;z-index:9995;pointer-events:none;opacity:0.6}
-.web-tl{top:0;left:0;width:200px;height:200px;background:radial-gradient(circle at 0 0,transparent 40%,rgba(200,200,200,0.2) 40.5%,transparent 41%),repeating-conic-gradient(from 0deg at 0 0,rgba(200,200,200,0.15) 0deg 1deg,transparent 1deg 30deg)}
-.web-br{bottom:0;right:0;width:250px;height:250px;background:repeating-conic-gradient(from 180deg at 100% 100%,rgba(200,200,200,0.15) 0deg 1deg,transparent 1deg 25deg)}
+/* TABS */
+.tab{display:none;animation:tabIn .6s cubic-bezier(.16,1,.3,1)}
+.tab.on{display:block}
+@keyframes tabIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
-.fly{position:fixed;font-size:24px;z-index:9999;pointer-events:none;transition:all 0.2s;filter:grayscale(1)}
-@keyframes flyAround{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(100px,50px) rotate(45deg)}50%{transform:translate(200px,-20px) rotate(-30deg)}75%{transform:translate(50px,80px) rotate(90deg)}100%{transform:translate(0,0) rotate(0)}}
-.fly-1{top:20%;left:20%;animation:flyAround 15s infinite}
-.fly-2{top:60%;right:30%;animation:flyAround 12s infinite reverse}
+/* HERO */
+.hero{padding:30px 0 40px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(34px,8vw,76px);font-weight:900;line-height:1.05;letter-spacing:-3px;margin-bottom:20px;background:linear-gradient(120deg,#fff 0%,#bae6fd 40%,#38bdf8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:gradMove 5s ease-in-out infinite}
+@keyframes gradMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:clamp(15px,2.2vw,18px);color:var(--txt2);line-height:1.65;max-width:660px;margin:0 auto 30px}
 
-/* ШАПКА */
-.hd{background:#332b24;border-bottom:3px dashed var(--broken);padding:15px 20px;position:sticky;top:40px;z-index:100;box-shadow:0 5px 10px rgba(0,0,0,0.5)}
-.hd-in{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap}
-.logo-img{width:50px;height:50px;border-radius:2px;object-fit:cover;filter:grayscale(100%) sepia(50%) contrast(150%);border:2px solid var(--rust);transform:rotate(-3deg)}
-.logo-tx{font-family:'Rubik Wet Paint',cursive;font-size:24px;color:var(--rust2);text-shadow:2px 2px 0 #000;letter-spacing:2px}
-.logo-sub{font-size:10px;color:var(--mold2);font-family:'Special Elite',cursive;margin-top:5px}
-.warning-tape{background:repeating-linear-gradient(45deg,#ffcc00,#ffcc00 10px,#000 10px,#000 20px);color:#000;font-weight:bold;padding:5px;text-align:center;font-size:12px;transform:rotate(1deg);margin-top:10px;border:1px solid #000}
+/* 3D ГЛОБУС */
+.globe-section{width:100%;display:flex;flex-direction:column;align-items:center;margin-bottom:40px}
+.globe-wrapper{width:100%;max-width:600px;height:400px;position:relative;border-radius:24px;overflow:hidden;background:#020617;border:1px solid var(--line2);box-shadow:0 20px 50px rgba(0,0,0,.5);cursor:grab;transition:all .3s}
+.globe-wrapper:active{cursor:grabbing}
+#globe-canvas{width:100%;height:100%;display:block}
+.globe-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--txt3);font-weight:600;background:rgba(2,6,23,.7);padding:6px 14px;border-radius:12px;pointer-events:none;backdrop-filter:blur(10px);border:1px solid var(--line);white-space:nowrap}
 
-/* КОНТЕНТ */
-.container{max-width:900px;margin:0 auto;padding:20px;position:relative;z-index:1}
-.hero{margin-top:30px;text-align:center;background:var(--bg-dirty);padding:30px 20px;border:2px solid var(--broken);border-radius:5px;position:relative;box-shadow:inset 0 0 50px rgba(0,0,0,0.8)}
-.hero h1{font-family:'Rubik Wet Paint',cursive;font-size:clamp(30px,6vw,50px);color:var(--txt);text-shadow:3px 3px 0 #000, -1px -1px 0 var(--mold);margin-bottom:15px;line-height:1.1;transform:skewX(-5deg)}
-.hero p{font-family:'Special Elite',cursive;font-size:16px;color:var(--txt2);margin-bottom:20px;line-height:1.5}
+/* STATS & SECTIONS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:60px;width:100%;max-width:900px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;backdrop-filter:blur(20px);transition:all .4s}
+.stat:hover{transform:translateY(-6px);border-color:var(--line2);box-shadow:0 20px 50px rgba(14,165,233,.2)}
+.stat-n{font-family:'Unbounded',sans-serif;font-size:clamp(30px,4.5vw,44px);font-weight:900;background:linear-gradient(120deg,#fff,#38bdf8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.stat-l{font-size:12px;color:var(--txt2);line-height:1.4}
+@media(max-width:640px){.stats{grid-template-columns:1fr}}
 
-/* ГЛОБУС */
-.globe-wrapper{width:100%;height:350px;background:#111;border:5px solid var(--broken);border-radius:8px;position:relative;overflow:hidden;margin:30px auto;box-shadow:inset 0 0 30px #000;cursor:crosshair}
-.globe-wrapper::before{content:'⚠️ МОНИТОР ПОВРЕЖДЁН ⚠️';position:absolute;top:10px;left:50%;transform:translateX(-50%);color:var(--alert);font-family:'Special Elite',cursive;font-size:14px;z-index:10;opacity:0.7;pointer-events:none;white-space:nowrap}
-#globe-canvas{width:100%;height:100%;display:block;filter:sepia(80%) hue-rotate(-30deg) contrast(150%) brightness(0.7);opacity:0.8}
-.dead-pixel{position:absolute;width:3px;height:3px;background:#fff;z-index:2;opacity:0.8}
+.section{padding:40px 0}
+.section-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap}
+.section-title{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;background:linear-gradient(120deg,#fff,#bae6fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-title span{color:var(--blue2);-webkit-text-fill-color:var(--blue2)}
 
-/* КАРТОЧКИ */
-.section-title{font-family:'Rubik Wet Paint',cursive;font-size:28px;color:var(--rust2);text-shadow:2px 2px 0 #000;margin:40px 0 20px;text-align:center}
-.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
-.comp{background:var(--card);border:2px solid #2e2118;padding:20px;position:relative;transform:rotate(1deg);box-shadow:5px 5px 15px rgba(0,0,0,0.5);transition:transform 0.2s}
-.comp:nth-child(even){transform:rotate(-1.5deg)}
-.comp-ic{width:100%;height:120px;object-fit:cover;filter:grayscale(100%) sepia(50%) contrast(120%);border:2px solid #000;margin-bottom:15px;opacity:0.8}
-.comp h3{font-family:'Special Elite',cursive;font-size:20px;color:var(--txt);margin-bottom:10px}
-.comp p{font-size:14px;color:var(--txt2);line-height:1.5}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.comp{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:30px;backdrop-filter:blur(20px);transition:all .4s;position:relative;overflow:visible} /* overflow visible для ножек */
+.comp-ic{width:80px;height:80px;border-radius:20px;object-fit:cover;margin-bottom:20px;border:1px solid var(--line2);background:#020617;box-shadow:0 0 20px rgba(56,189,248,.15)}
+.comp h3{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:800;margin-bottom:10px;color:var(--txt)}
+.comp p{font-size:13.5px;color:var(--txt2);line-height:1.6;margin-bottom:16px}
 
-/* ПОДВАЛ */
-.footer{text-align:center;margin-top:50px;padding:20px;border-top:3px dashed var(--broken);background:#221c16}
-.footer p{font-size:12px;color:var(--txt3);font-family:'Special Elite',cursive;margin-bottom:10px}
-.visitor-counter{display:inline-block;background:#000;color:#0f0;font-family:monospace;padding:5px 10px;border:1px solid #333;font-size:14px;letter-spacing:2px}
+.about-block{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:40px;backdrop-filter:blur(20px)}
+.about-block p{font-size:15px;line-height:1.8;color:var(--txt2);margin-bottom:16px}
+.about-block b{color:var(--txt);text-shadow:0 0 20px var(--glow)}
 
-/* АНИМАЦИИ УНИЧТОЖЕНИЯ */
-@keyframes shakeHard{0%,100%{transform:translate(0,0) rotate(0)}10%,30%,50%,70%,90%{transform:translate(-5px,5px) rotate(-2deg)}20%,40%,60%,80%{transform:translate(5px,-5px) rotate(2deg)}}
-.shake-hard{animation:shakeHard 0.2s infinite}
-@keyframes eatAway{0%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%);opacity:1}50%{clip-path:polygon(0 0,50% 0,60% 50%,40% 100%,0 100%);opacity:0.8}100%{clip-path:polygon(0 0,0 0,0 0,0 0,0 0);opacity:0}}
-.eaten{animation:eatAway 3s forwards}
-@keyframes noise{0%{background-position:0 0}10%{background-position:-5px -5px}20%{background-position:-10px 5px}30%{background-position:5px -10px}40%{background-position:-5px 15px}50%{background-position:-10px 10px}60%{background-position:15px 0}70%{background-position:0 15px}80%{background-position:3px 10px}90%{background-position:-10px 10px}100%{background-position:0 0}}
-.static-noise{position:fixed;inset:0;z-index:10001;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");opacity:0.8;display:none;animation:noise 0.1s infinite}
-.fly-swarm{position:fixed;z-index:10002;font-size:30px;pointer-events:none;filter:drop-shadow(0 0 5px rgba(0,0,0,0.8));display:none}
-@keyframes eatFly{0%{transform:scale(1) translate(0,0)}50%{transform:scale(1.5) translate(var(--tx),var(--ty))}100%{transform:scale(0.1) translate(var(--tx),var(--ty));opacity:0}}
+.deposit-block{background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(139,92,246,.1));border:1px solid var(--line2);border-radius:28px;padding:50px 30px;text-align:center;backdrop-filter:blur(20px)}
+.deposit-block h2{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4.5vw,44px);font-weight:900;margin-bottom:14px}
+.deposit-block h2 span{color:#fbbf24;}
+.btn-tg{background:linear-gradient(135deg,#38bdf8,#1d98dc);color:#fff;box-shadow:0 0 30px rgba(56,189,248,.4);padding:16px 28px;border-radius:16px;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:10px;text-decoration:none;transition:all .3s;position:relative}
+
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.contact{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;text-decoration:none;color:var(--txt);transition:all .35s;backdrop-filter:blur(20px);position:relative}
+.contact:hover{transform:translateY(-4px);border-color:var(--line2);box-shadow:0 15px 40px rgba(14,165,233,.2)}
+.contact-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.contact-ic.tg{background:linear-gradient(135deg,#38bdf8,#1d98dc);color:#fff}
+.contact-ic.tw{background:linear-gradient(135deg,#a970ff,#9146ff);color:#fff}
+
+.footer{text-align:center;padding:40px 20px 24px;border-top:1px solid var(--line);margin-top:40px;background:linear-gradient(180deg,transparent,rgba(14,165,233,.05))}
+.footer-logo{width:56px;height:56px;border-radius:14px;object-fit:cover;margin-bottom:16px;box-shadow:0 0 25px var(--glow)}
+.footer-tx{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--txt)}
+.footer-tx span{color:var(--blue2)}
+
+/* ==========================================
+   ЛОГИКА "УБЕГАЮЩИХ" ЭЛЕМЕНТОВ С НОЖКАМИ
+   ========================================== */
+/* Сами ножки */
+.leg { position: absolute; bottom: -15px; width: 4px; height: 15px; background-color: #38bdf8; border-radius: 2px; z-index: -1; pointer-events: none; transition: opacity 0.2s; opacity: 0; }
+.leg::after { content: ''; position: absolute; bottom: 0; left: -4px; width: 12px; height: 6px; background-color: #0ea5e9; border-radius: 5px 5px 0 0; }
+.leg-left { left: 20%; transform-origin: top center; }
+.leg-right { right: 20%; transform-origin: top center; }
+
+/* Класс для элемента, который "ожил" */
+.running-element {
+  position: fixed !important;
+  z-index: 99999 !important;
+  margin: 0 !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important;
+  border-color: #38bdf8 !important;
+  pointer-events: none !important; /* Чтобы не мешал бегать */
+  transition: transform 0.05s linear !important;
+  animation: runWiggle 0.3s infinite alternate !important;
+}
+.running-element .leg { opacity: 1; animation: walk 0.3s infinite alternate; }
+.running-element .leg-left { animation: walkLeft 0.3s infinite alternate; }
+.running-element .leg-right { animation: walkRight 0.3s infinite alternate; }
+
+@keyframes runWiggle { 0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); } }
+@keyframes walkLeft { 0% { transform: rotate(-30deg); } 100% { transform: rotate(30deg); } }
+@keyframes walkRight { 0% { transform: rotate(30deg); } 100% { transform: rotate(-30deg); } }
 </style>
 </head>
 <body>
 
-<!-- ТАЙМЕР -->
-<div class="destruction-timer" id="timerBar">ДО УНИЧТОЖЕНИЯ: 20 СЕК</div>
+<div class="aurora"></div>
 
-<div class="stain stain-1"></div>
-<div class="stain stain-2"></div>
-<div class="stain stain-3"></div>
-<div class="spiderweb web-tl"></div>
-<div class="spiderweb web-br"></div>
-<div class="fly fly-1">🪰</div>
-<div class="fly fly-2">🪰</div>
-
-<div class="crt-overlay"></div>
-<div class="vignette"></div>
-
-<!-- Белый шум для финала -->
-<div class="static-noise" id="staticNoise"></div>
-
-<header class="hd" id="mainHeader">
+<header class="hd">
   <div class="hd-in">
-    <img class="logo-img" id="logoImg" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
-    <div>
-      <div class="logo-tx" id="logoText">SavvaLётик</div>
-      <div class="logo-sub">(архивная копия 2004 г.)</div>
-    </div>
+    <a class="logo run-target" onclick="showTab('home')">
+      <img class="logo-img" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
+      <div>
+        <div class="logo-tx">Savva<span>Lётик</span></div>
+        <div class="logo-sub">The Savvalyotik Co.</div>
+      </div>
+    </a>
   </div>
-  <div class="warning-tape">ВНИМАНИЕ! САЙТ РАБОТАЕТ В ТЕСТОВОМ РЕЖИМЕ С 2004 ГОДА</div>
 </header>
 
-<main class="container" id="mainContainer">
-  <div class="hero" id="heroBlock">
-    <h1>Сайт временно не работает</h1>
-    <p>Мы переехали на новый сервер еще в 2008 году, но забыли включить. Сейчас админ (Вася) пытается найти причину сбоя.</p>
+<nav class="bottom-nav">
+  <button data-tab="home" class="on run-target" onclick="showTab('home')"><span class="nav-icon">🏠</span><span class="nav-text">Главная</span></button>
+  <button data-tab="companies" class="run-target" onclick="showTab('companies')"><span class="nav-icon">🏢</span><span class="nav-text">Компании</span></button>
+  <button data-tab="deposits" class="run-target" onclick="showTab('deposits')"><span class="nav-icon">💰</span><span class="nav-text">Вклады</span></button>
+  <button data-tab="contacts" class="run-target" onclick="showTab('contacts')"><span class="nav-icon">📞</span><span class="nav-text">Контакты</span></button>
+</nav>
+
+<main class="container">
+
+<section class="tab on" id="tab-home">
+  <div class="hero">
+    <h1>Будущее<br>начинается <span style="color:var(--blue2);-webkit-text-fill-color:var(--blue2);text-shadow:0 0 40px var(--glow)">здесь</span></h1>
+    <p>Международный холдинг с штаб-квартирой на Багамских островах. Мы создаём компании, которые меняют правила игры — от финтеха до цифрового искусства.</p>
+    
+    <div class="globe-section">
+      <div class="globe-wrapper">
+        <canvas id="globe-canvas"></canvas>
+        <div class="globe-hint">🖐 Один палец — крутить · Два пальца — зум</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat run-target">
+        <div class="stat-n">61%</div>
+        <div class="stat-l">акций у основателя — Баташана Саввы</div>
+      </div>
+      <div class="stat run-target">
+        <div class="stat-n">30%</div>
+        <div class="stat-l">у Соколова Андрея, СЕО ТраляЛя Банка</div>
+      </div>
+      <div class="stat run-target">
+        <div class="stat-n">9%</div>
+        <div class="stat-l">у Арбатова Леона, главного технолога</div>
+      </div>
+    </div>
   </div>
 
-  <!-- ГЛОБУС -->
-  <div class="globe-wrapper" id="globeWrapper">
-    <canvas id="globe-canvas"></canvas>
-    <div class="dead-pixel" style="top:20%;left:30%"></div>
-    <div class="dead-pixel" style="top:70%;left:80%"></div>
-    <div class="dead-pixel" style="top:40%;left:60%"></div>
-  </div>
-
-  <h2 class="section-title">Дочерние компании</h2>
-  <div class="comp-grid" id="companyGrid">
-    <div class="comp">
-      <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7436.jpeg" alt="Банк">
-      <h3>ТраляЛя Банк</h3>
-      <p>Банк закрыт на реконструкцию. Валюту не меняем (сломалась касса).</p>
-    </div>
-    <div class="comp">
-      <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7440.jpeg" alt="Кораблик">
-      <h3>S-Ship</h3>
-      <p>Бумажные кораблики размокли под дождем. Сейчас сушим.</p>
-    </div>
-    <div class="comp">
-      <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7442.jpeg" alt="Книги">
-      <h3>S-Books</h3>
-      <p>Книги съела моль. Остались только обложки.</p>
+  <div class="section">
+    <div class="section-h"><h2 class="section-title">О <span>компании</span></h2></div>
+    <div class="about-block run-target">
+      <p><b>SavvaLётик</b> был основан <b>1 мая 2023 года</b> Баташаном Саввой. Сегодня Баташану принадлежит <b>61% акций</b> компании.</p>
+      <p>Базируется SavvaLётик на <b>Багамских островах</b> и на него не действуют санкции. СЕО компании — <b>Баташан Савва Федорович</b>.</p>
+      <p>СЕО ТраляЛя Банка — <b>Соколов Андрей Борисович</b> (30% акций). Главный технолог — <b>Арбатов Леон Петрович</b> (9% акций).</p>
     </div>
   </div>
+</section>
 
-  <h2 class="section-title">Контакты (связь потеряна)</h2>
-  <p style="text-align:center;color:var(--txt2);font-size:14px">Почтовый голубь сдох. Факс зажевало. Телеграм-канал удален за неуплату.</p>
+<section class="tab" id="tab-companies">
+  <div class="section" style="padding-top:40px">
+    <div class="section-h"><h2 class="section-title">Наши <span>компании</span></h2></div>
+    <div class="comp-grid">
+      <div class="comp run-target">
+        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7436.jpeg" alt="ТраляЛя Банк">
+        <h3>ТраляЛя Банк</h3>
+        <p>Банк, основанный 14 апреля 2022 года. Производит валюту — ТраляЛя Доллар.</p>
+      </div>
+      <div class="comp run-target">
+        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7440.jpeg" alt="S-Ship">
+        <h3>S-Ship</h3>
+        <p>Производство бумажных корабликов. Маленькие, но очень важные.</p>
+      </div>
+      <div class="comp run-target">
+        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7442.jpeg" alt="S-Books">
+        <h3>S-Books</h3>
+        <p>Издательство книг и картин. Для тех, кто любит бумагу.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-deposits">
+  <div class="section" style="padding-top:40px">
+    <div class="deposit-block run-target">
+      <h2>В <span>ТраляЛя Банке</span><br>можно открывать вклады!</h2>
+      <p>Напишите нам в Telegram — и мы откроем вклад за пару минут.</p>
+      <a class="btn-tg run-target" href="https://t.me/yeltryasoguz" target="_blank">Написать в Telegram</a>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-contacts">
+  <div class="section" style="padding-top:40px">
+    <div class="section-h"><h2 class="section-title">Связаться <span>с нами</span></h2></div>
+    <div class="contact-grid">
+      <a class="contact run-target" href="https://t.me/savvalyotik" target="_blank">
+        <div class="contact-ic tg">✈️</div>
+        <div><div class="t">Telegram-канал</div><div class="s">@savvalyotik</div></div>
+      </a>
+      <a class="contact run-target" href="https://t.me/yeltryasoguz" target="_blank">
+        <div class="contact-ic tg">✈️</div>
+        <div><div class="t">Вклады (Telegram)</div><div class="s">@yeltryasoguz</div></div>
+      </a>
+      <a class="contact run-target" href="https://www.twitch.tv/savva075" target="_blank">
+        <div class="contact-ic tw">🎮</div>
+        <div><div class="t">Twitch</div><div class="s">@savva075</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<footer class="footer" id="mainFooter">
-  <p>© 2001-2004 SavvaLётик. Все права защищены медведем.</p>
-  <p>Вы посетитель номер:</p>
-  <div class="visitor-counter">000 00 1</div>
+<footer class="footer">
+  <img class="footer-logo run-target" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
+  <div class="footer-tx run-target">Savva<span>Lётик</span> © 2023–2026</div>
 </footer>
 
 <script>
 // ==========================================
-// 1. ТАЙМЕР ДО УНИЧТОЖЕНИЯ
+// 1. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
 // ==========================================
-let timeLeft = 20;
-const timerEl = document.getElementById('timerBar');
-
-const timerInterval = setInterval(() => {
-  timeLeft--;
-  if (timeLeft > 0) {
-    timerEl.textContent = `ДО УНИЧТОЖЕНИЯ: ${timeLeft} СЕК`;
-    // Ускоряем пульсацию в конце
-    if(timeLeft <= 5) timerEl.style.animationDuration = '0.2s';
-  } else {
-    clearInterval(timerInterval);
-    startDestruction();
-  }
-}, 1000);
-
-// ==========================================
-// 2. СЦЕНАРИЙ УНИЧТОЖЕНИЯ
-// ==========================================
-function startDestruction() {
-  timerEl.textContent = 'УНИЧТОЖЕНИЕ...';
-  timerEl.style.background = '#ff0000';
-  timerEl.style.fontSize = '24px';
-  
-  // 1. Тряска экрана
-  document.body.classList.add('shake-hard');
-  
-  // 2. Удаляем шапку и футер
-  document.getElementById('mainHeader').remove();
-  document.getElementById('mainFooter').remove();
-  
-  // 3. Логотип "пожирается"
-  const logo = document.getElementById('logoImg');
-  if (logo) {
-    logo.classList.add('eaten');
-    logo.style.filter = 'grayscale(100%) sepia(100%) hue-rotate(90deg) contrast(200%)';
-  }
-
-  // 4. Спавн мух
-  const flySwarm = document.createElement('div');
-  flySwarm.className = 'fly-swarm';
-  flySwarm.innerHTML = '🪰🪰🪰';
-  flySwarm.style.display = 'block';
-  flySwarm.style.left = '50%';
-  flySwarm.style.top = '20%';
-  flySwarm.style.fontSize = '40px';
-  document.body.appendChild(flySwarm);
-
-  // 5. Кнопки и блоки "пожираются" и падают
-  const elementsToEat = document.querySelectorAll('.comp, .hero, .globe-wrapper');
-  elementsToEat.forEach((el, index) => {
-    setTimeout(() => {
-      el.classList.add('eaten');
-      // Эффект мух, летящих к элементу
-      for(let i=0; i<5; i++) {
-        spawnFlyEat(el);
-      }
-    }, index * 300);
-  });
-
-  // 6. Через 3 секунды включаем белый шум и вырубаем всё
-  setTimeout(() => {
-    const noise = document.getElementById('staticNoise');
-    noise.style.display = 'block';
-    document.querySelector('.crt-overlay').style.display = 'none';
-    
-    // Звук телевизионного шума
-    playStaticSound();
-    
-    // Через 2 секунды — экран гаснет
-    setTimeout(() => {
-      document.body.innerHTML = '<div style="background:#000;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;color:#333;font-family:monospace;font-size:20px;">СИГНАЛ ПОТЕРЯН</div>';
-      document.body.style.overflow = 'hidden';
-    }, 2000);
-  }, 3000);
-}
-
-// Спавн мухи, которая летит "кушать"
-function spawnFlyEat(targetEl) {
-  const rect = targetEl.getBoundingClientRect();
-  const fly = document.createElement('div');
-  fly.textContent = '🪰';
-  fly.style.position = 'fixed';
-  fly.style.fontSize = '30px';
-  fly.style.zIndex = '10005';
-  fly.style.pointerEvents = 'none';
-  fly.style.left = (rect.left + Math.random() * rect.width) + 'px';
-  fly.style.top = (rect.top + Math.random() * rect.height) + 'px';
-  fly.style.transition = 'all 1s ease-in';
-  
-  document.body.appendChild(fly);
-  
-  setTimeout(() => {
-    fly.style.transform = `scale(0) rotate(720deg)`;
-    fly.style.opacity = '0';
-  }, 100);
-  
-  setTimeout(() => fly.remove(), 1200);
-}
-
-// Звук скрипа
-let audioCtx;
-function playStaticSound() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const bufferSize = audioCtx.sampleRate * 2;
-  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) {
-    data[i] = Math.random() * 2 - 1;
-  }
-  const noise = audioCtx.createBufferSource();
-  noise.buffer = buffer;
-  const gain = audioCtx.createGain();
-  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
-  noise.connect(gain);
-  gain.connect(audioCtx.destination);
-  noise.start();
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('tab-'+name).classList.add('on');
+  document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // ==========================================
-// 3. 3D ГЛОБУС (ПОБИТЫЙ)
+// 2. 3D ГЛОБУС
 // ==========================================
+const cities = [
+  { name: 'Москва', lat: 55.75, lon: 37.61 },
+  { name: 'Санкт-Петербург', lat: 59.93, lon: 30.33 },
+  { name: 'Абу-Даби', lat: 24.45, lon: 54.37 },
+  { name: 'Лондон', lat: 51.50, lon: -0.12 },
+  { name: 'Сан-Франциско', lat: 37.77, lon: -122.41 },
+  { name: 'Вашингтон', lat: 38.90, lon: -77.03 },
+  { name: 'Ереван', lat: 40.18, lon: 44.51 },
+  { name: 'Токио', lat: 35.68, lon: 139.69 },
+  { name: 'Сеул', lat: 37.56, lon: 126.97 },
+  { name: 'Тайнань', lat: 22.99, lon: 120.21 },
+  { name: 'Берлин', lat: 52.52, lon: 13.40 },
+  { name: 'Глазго', lat: 55.86, lon: -4.25 },
+  { name: 'Париж', lat: 48.85, lon: 2.35 },
+  { name: 'Красноярск', lat: 56.01, lon: 92.85 },
+  { name: 'Киев', lat: 50.45, lon: 30.52 },
+  { name: 'Минск', lat: 53.90, lon: 27.56 }
+];
+
+let scene, camera, renderer, globeGroup;
+let isDragging = false, prevPos = {x:0, y:0};
+let targetZoom = 250, currentZoom = 250;
+
 function initGlobe() {
   const canvas = document.getElementById('globe-canvas');
-  const wrapper = document.getElementById('globeWrapper');
-  if(!canvas || !wrapper) return;
+  const wrapper = canvas.parentElement;
   
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
   camera.position.z = 250;
 
-  const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
   renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
-  renderer.setPixelRatio(1); 
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
-  const dirLight = new THREE.DirectionalLight(0xffeeaa, 0.5);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.position.set(5, 3, 5);
   scene.add(dirLight);
 
-  const globeGroup = new THREE.Group();
+  globeGroup = new THREE.Group();
   scene.add(globeGroup);
 
   const textureLoader = new THREE.TextureLoader();
   const earthMap = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
   
-  const earthMat = new THREE.MeshPhongMaterial({ map: earthMap, shininess: 5 });
-  const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(100, 32, 32), earthMat); 
+  const earthMat = new THREE.MeshPhongMaterial({ map: earthMap, shininess: 15 });
+  const earthMesh = new THREE.Mesh(new THREE.SphereGeometry(100, 64, 64), earthMat);
   globeGroup.add(earthMesh);
 
-  // Управление
-  let isDragging = false;
-  let prevPos = { x: 0, y: 0 };
-  
-  wrapper.addEventListener('pointerdown', (e) => { isDragging = true; prevPos = { x: e.clientX, y: e.clientY }; });
-  wrapper.addEventListener('pointermove', (e) => {
+  const atmoMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.15, side: THREE.BackSide });
+  globeGroup.add(new THREE.Mesh(new THREE.SphereGeometry(105, 32, 32), atmoMat));
+
+  cities.forEach(city => {
+    const phi = (90 - city.lat) * (Math.PI / 180);
+    const theta = (city.lon + 180) * (Math.PI / 180);
+    const x = -(100 * Math.sin(phi) * Math.cos(theta));
+    const z = (100 * Math.sin(phi) * Math.sin(theta));
+    const y = (100 * Math.cos(phi));
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(1.5, 8, 8), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+    dot.position.set(x, y, z);
+    globeGroup.add(dot);
+  });
+
+  const wrapperEl = wrapper;
+  wrapperEl.addEventListener('pointerdown', (e) => { isDragging = true; prevPos = { x: e.clientX, y: e.clientY }; });
+  wrapperEl.addEventListener('pointermove', (e) => {
     if (isDragging) {
       globeGroup.rotation.y += (e.clientX - prevPos.x) * 0.005;
       globeGroup.rotation.x += (e.clientY - prevPos.y) * 0.005;
       prevPos = { x: e.clientX, y: e.clientY };
     }
   });
-  wrapper.addEventListener('pointerup', () => isDragging = false);
+  wrapperEl.addEventListener('pointerup', () => isDragging = false);
+  wrapperEl.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    targetZoom += e.deltaY * 0.4;
+    targetZoom = Math.max(110, Math.min(400, targetZoom));
+  }, { passive: false });
 
-  let frame = 0;
   function animate() {
     requestAnimationFrame(animate);
-    // Глюк
-    if (frame % 120 === 0) globeGroup.rotation.y += 0.1;
-    frame++;
     if (!isDragging) globeGroup.rotation.y += 0.002;
+    currentZoom += (targetZoom - currentZoom) * 0.1;
+    camera.position.z = currentZoom;
     renderer.render(scene, camera);
   }
   animate();
 }
+window.addEventListener('load', () => setTimeout(initGlobe, 100));
 
-window.addEventListener('load', () => {
-  setTimeout(initGlobe, 500);
+// ==========================================
+// 3. МАГИЯ УБЕГАЮЩИХ ЭЛЕМЕНТОВ С НОЖКАМИ
+// ==========================================
+const targets = document.querySelectorAll('.run-target');
+const runningEls = [];
+
+// Настройки физики
+const speed = 8;          // Скорость убегания
+const fleeDistance = 150; // Расстояние, с которого начинает убегать
+const stopDistance = 300; // Расстояние, с которого успокаивается
+
+let mouseX = -1000, mouseY = -1000;
+
+// Отслеживаем мышку/палец
+document.addEventListener('pointermove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
 });
+
+// Подготовка элементов
+targets.forEach(el => {
+  // Создаем ножки
+  const leftLeg = document.createElement('div');
+  leftLeg.className = 'leg leg-left';
+  const rightLeg = document.createElement('div');
+  rightLeg.className = 'leg leg-right';
+  el.appendChild(leftLeg);
+  el.appendChild(rightLeg);
+
+  // Запоминаем изначальные координаты
+  const rect = el.getBoundingClientRect();
+  el.dataset.origX = rect.left + window.scrollX;
+  el.dataset.origY = rect.top + window.scrollY;
+  el.dataset.origW = rect.width;
+  el.dataset.origH = rect.height;
+
+  // Добавляем в список активных
+  runningEls.push({
+    el: el,
+    x: rect.left + window.scrollX,
+    y: rect.top + window.scrollY,
+    vx: 0,
+    vy: 0,
+    isRunning: false,
+    hasFled: false
+  });
+});
+
+// Главный цикл анимации
+function animateEscape() {
+  requestAnimationFrame(animateEscape);
+
+  runningEls.forEach(obj => {
+    const el = obj.el;
+    // Если элемент скрыт (например, в неактивной вкладке), пропускаем
+    if (el.offsetParent === null) return;
+
+    const rect = el.getBoundingClientRect();
+    // Центр элемента (учитываем скролл)
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // Расстояние до курсора
+    const dx = centerX - mouseX;
+    const dy = centerY - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // ЛОГИКА
+    if (dist < fleeDistance && !obj.isRunning) {
+      // Начал убегать
+      obj.isRunning = true;
+      el.classList.add('running-element');
+      
+      // Фиксируем размеры и позицию, чтобы не сломать верстку
+      el.style.width = rect.width + 'px';
+      el.style.height = rect.height + 'px';
+      el.style.left = rect.left + 'px';
+      el.style.top = rect.top + 'px';
+      
+      // Добавляем случайный импульс
+      obj.vx = (dx / dist) * speed * 2;
+      obj.vy = (dy / dist) * speed * 2;
+    }
+
+    if (obj.isRunning) {
+      // Если убежал далеко — возвращаем на место
+      if (dist > stopDistance && obj.hasFled) {
+        obj.isRunning = false;
+        el.classList.remove('running-element');
+        el.style.cssText = ''; // Сбрасываем инлайн-стили
+        return;
+      }
+      
+      obj.hasFled = true;
+
+      // Отталкивание от курсора
+      if (dist < fleeDistance && dist > 0) {
+        const force = (fleeDistance - dist) / fleeDistance;
+        obj.vx += (dx / dist) * force * 3;
+        obj.vy += (dy / dist) * force * 3;
+      }
+
+      // Ограничение скорости
+      const maxSpeed = 15;
+      const currentSpeed = Math.sqrt(obj.vx * obj.vx + obj.vy * obj.vy);
+      if (currentSpeed > maxSpeed) {
+        obj.vx = (obj.vx / currentSpeed) * maxSpeed;
+        obj.vy = (obj.vy / currentSpeed) * maxSpeed;
+      }
+
+      // Трение
+      obj.vx *= 0.95;
+      obj.vy *= 0.95;
+
+      // Обновление позиции (относительно окна)
+      let newX = parseFloat(el.style.left) + obj.vx;
+      let newY = parseFloat(el.style.top) + obj.vy;
+
+      // Границы экрана (чтобы не улетели навсегда)
+      if (newX < 0) { newX = 0; obj.vx *= -0.5; }
+      if (newY < 0) { newY = 0; obj.vy *= -0.5; }
+      if (newX + rect.width > window.innerWidth) { newX = window.innerWidth - rect.width; obj.vx *= -0.5; }
+      if (newY + rect.height > window.innerHeight) { newY = window.innerHeight - rect.height; obj.vy *= -0.5; }
+
+      // Применяем
+      el.style.left = newX + 'px';
+      el.style.top = newY + 'px';
+    }
+  });
+}
+animateEscape();
 </script>
 </body>
 </html>
