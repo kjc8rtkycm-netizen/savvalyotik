@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#020617">
+<title>SavvaLётик — The Savvalyotik Company</title>
+<link rel="icon" href="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Three.js для 3D глобуса -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#020617;--bg2:#050a1f;--card:rgba(15,23,42,.6);
+  --line:rgba(56,189,248,.15);--line2:rgba(56,189,248,.4);
+  --txt:#f8fafc;--txt2:#94a3b8;--txt3:#64748b;
+  --blue:#0ea5e9;--blue2:#38bdf8;
+  --glow:rgba(14,165,233,.4);--glow-strong:rgba(56,189,248,.7);
+}
+html,body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;scroll-behavior:smooth}
+body{position:relative;padding-bottom:110px} /* Отступ для нижнего меню */
+
+/* ===== ФОН ===== */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--bg)}
+.aurora::before,.aurora::after{content:'';position:absolute;width:90vw;height:90vh;border-radius:50%;filter:blur(100px);opacity:.4;mix-blend-mode:screen}
+.aurora::before{background:radial-gradient(circle,#0ea5e9,transparent 60%);top:-30%;left:-20%;animation:float1 18s ease-in-out infinite}
+.aurora::after{background:radial-gradient(circle,#8b5cf6,transparent 60%);bottom:-30%;right:-20%;animation:float2 22s ease-in-out infinite}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20%,10%) scale(1.2)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-20%,-15%) scale(1.3)}}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(56,189,248,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.05) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at center,#000 20%,transparent 80%)}
+.container{max-width:1120px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* ===== HEADER ===== */
+.hd{position:sticky;top:0;z-index:100;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(2,6,23,.5);border-bottom:1px solid var(--line);transition:background .3s}
+.hd-in{max-width:1120px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:center;}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--txt);cursor:pointer;transition:transform .3s}
+.logo:hover{transform:scale(1.02)}
+.logo-img{width:44px;height:44px;border-radius:12px;object-fit:cover;background:#020617;box-shadow:0 0 20px var(--glow);border:1px solid var(--line2)}
+.logo-tx{font-family:'Unbounded',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.logo-tx span{color:var(--blue2)}
+.logo-sub{font-size:9px;color:var(--txt3);font-weight:600;letter-spacing:1.5px;margin-top:4px;text-transform:uppercase}
+
+/* ===== НИЖНЕЕ ПЛАВАЮЩЕЕ МЕНЮ ===== */
+.bottom-nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:6px;padding:8px;background:rgba(15,23,42,.7);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:0 20px 40px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1);transition:all .4s cubic-bezier(.2,.8,.2,1)}
+.bottom-nav button{position:relative;padding:12px 24px;border-radius:16px;background:transparent;border:none;color:var(--txt2);font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:8px;overflow:hidden}
+.bottom-nav button:hover{color:#fff;background:rgba(255,255,255,.05)}
+.bottom-nav button.on{color:#fff;background:linear-gradient(135deg,rgba(14,165,233,.3),rgba(56,189,248,.3));box-shadow:0 0 20px var(--glow),inset 0 1px 0 rgba(255,255,255,.2);border:1px solid rgba(56,189,248,.3)}
+.bottom-nav button.on::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--blue2);box-shadow:0 0 10px var(--blue2)}
+@media(max-width:640px){.bottom-nav{width:90%;justify-content:space-between;padding:6px;bottom:16px}.bottom-nav button{padding:10px 12px;font-size:10px;gap:4px;flex-direction:column}.nav-icon{display:block;font-size:18px}.nav-text{display:block;margin-top:2px}}
+
+/* ===== TABS ===== */
+.tab{display:none;animation:tabIn .6s cubic-bezier(.16,1,.3,1)}
+.tab.on{display:block}
+@keyframes tabIn{from{opacity:0;transform:translateY(30px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* ===== HERO + 3D GLOBE ===== */
+.hero{padding:30px 0 40px;position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;background:rgba(56,189,248,.1);border:1px solid var(--line2);font-size:11px;font-weight:700;color:var(--blue2);font-family:'Unbounded',sans-serif;margin-bottom:20px;letter-spacing:.5px;text-transform:uppercase;box-shadow:0 0 20px rgba(56,189,248,.2);animation:pulse-border 2s infinite}
+@keyframes pulse-border{0%,100%{box-shadow:0 0 20px rgba(56,189,248,.2)}50%{box-shadow:0 0 40px rgba(56,189,248,.4)}}
+.hero h1{font-family:'Unbounded',sans-serif;font-size:clamp(34px,8vw,76px);font-weight:900;line-height:1.05;letter-spacing:-3px;margin-bottom:20px;background:linear-gradient(120deg,#fff 0%,#bae6fd 40%,#38bdf8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:gradMove 5s ease-in-out infinite}
+@keyframes gradMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero p{font-size:clamp(15px,2.2vw,18px);color:var(--txt2);line-height:1.65;max-width:660px;margin:0 auto 30px}
+
+/* Контейнер для 3D глобуса */
+.globe-wrapper{width:100%;max-width:600px;height:400px;margin:0 auto 30px;position:relative;border-radius:24px;overflow:hidden;background:radial-gradient(circle at center,rgba(56,189,248,.1),transparent 70%);border:1px solid var(--line2);box-shadow:0 20px 50px rgba(0,0,0,.5),inset 0 0 40px rgba(56,189,248,.1);cursor:grab}
+.globe-wrapper:active{cursor:grabbing}
+#globe-canvas{width:100%;height:100%;display:block}
+.globe-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--txt3);font-weight:600;background:rgba(2,6,23,.6);padding:4px 12px;border-radius:10px;pointer-events:none;backdrop-filter:blur(10px);border:1px solid var(--line)}
+
+/* ===== STATS ===== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:60px;width:100%;max-width:900px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;backdrop-filter:blur(20px);position:relative;overflow:hidden;transition:all .4s cubic-bezier(.2,.8,.2,1);cursor:default}
+.stat:hover{transform:translateY(-6px) scale(1.02);border-color:var(--line2);box-shadow:0 20px 50px rgba(14,165,233,.2),0 0 0 1px var(--blue2)}
+.stat::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,transparent,var(--blue2),transparent);opacity:.8}
+.stat-n{font-family:'Unbounded',sans-serif;font-size:clamp(30px,4.5vw,44px);font-weight:900;background:linear-gradient(120deg,#fff,#38bdf8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;letter-spacing:-1px;margin-bottom:10px}
+.stat-l{font-size:12px;color:var(--txt2);font-weight:500;line-height:1.4}
+@media(max-width:640px){.stats{grid-template-columns:1fr;gap:12px}}
+
+/* ===== SECTIONS & COMPANIES ===== */
+.section{padding:40px 0}
+.section-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+.section-title{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4.5vw,42px);font-weight:900;letter-spacing:-2px;line-height:1.1;background:linear-gradient(120deg,#fff,#bae6fd);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.section-title span{color:var(--blue2);-webkit-text-fill-color:var(--blue2)}
+.section-sub{font-size:14px;color:var(--txt2);font-weight:500;max-width:400px;text-align:right;line-height:1.5}
+@media(max-width:640px){.section-sub{text-align:left}}
+
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.comp{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:30px;backdrop-filter:blur(20px);transition:all .4s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;cursor:pointer}
+.comp::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 100% 0%,rgba(56,189,248,.2),transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
+.comp:hover{transform:translateY(-8px) scale(1.02);border-color:var(--line2);box-shadow:0 30px 70px rgba(14,165,233,.25),0 0 0 1px var(--blue2),inset 0 0 30px rgba(56,189,248,.05)}
+.comp:hover::before{opacity:1}
+.comp-ic{width:80px;height:80px;border-radius:20px;object-fit:cover;margin-bottom:20px;position:relative;z-index:1;transition:transform .4s cubic-bezier(.2,.8,.2,1);border:1px solid var(--line2);background:#020617;box-shadow:0 0 20px rgba(56,189,248,.15)}
+.comp:hover .comp-ic{transform:scale(1.15) rotate(-8deg);box-shadow:0 0 40px var(--glow-strong)}
+.comp h3{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:10px;position:relative;z-index:1;color:var(--txt)}
+.comp p{font-size:13.5px;color:var(--txt2);line-height:1.6;position:relative;z-index:1;margin-bottom:16px}
+.comp-tag{display:inline-block;padding:5px 12px;border-radius:8px;font-size:10px;font-weight:700;font-family:'Unbounded',sans-serif;letter-spacing:.5px;text-transform:uppercase;position:relative;z-index:1}
+.comp-tag.gold{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.comp-tag.blue{background:rgba(56,189,248,.15);color:var(--blue2);border:1px solid var(--line2)}
+.comp-tag.purple{background:rgba(139,92,246,.15);color:#a78bfa;border:1px solid rgba(139,92,246,.3)}
+
+/* ===== ABOUT & DEPOSITS & CONTACTS ===== */
+.about-block{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:40px;backdrop-filter:blur(20px);position:relative;overflow:hidden;box-shadow:inset 0 0 60px rgba(56,189,248,.03)}
+.about-block::before{content:'';position:absolute;top:-50%;right:-20%;width:500px;height:500px;background:radial-gradient(circle,rgba(56,189,248,.15),transparent 70%);pointer-events:none}
+.about-block p{font-size:15px;line-height:1.8;color:var(--txt2);margin-bottom:16px;position:relative;z-index:1}
+.about-block p:last-child{margin-bottom:0}
+.about-block b{color:var(--txt);font-weight:700;text-shadow:0 0 20px var(--glow)}
+@media(max-width:640px){.about-block{padding:24px}}
+
+.deposit-block{background:linear-gradient(135deg,rgba(14,165,233,.15),rgba(139,92,246,.1));border:1px solid var(--line2);border-radius:28px;padding:50px 30px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(20px);box-shadow:0 20px 80px rgba(14,165,233,.2),inset 0 0 80px rgba(56,189,248,.05);margin-top:40px}
+.deposit-block h2{font-family:'Unbounded',sans-serif;font-size:clamp(26px,4.5vw,44px);font-weight:900;letter-spacing:-2px;margin-bottom:14px;position:relative;z-index:1;line-height:1.1}
+.deposit-block h2 span{color:#fbbf24;text-shadow:0 0 40px rgba(251,191,36,.6)}
+.deposit-block p{font-size:15.5px;color:var(--txt2);margin-bottom:32px;position:relative;z-index:1;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.6}
+.btn-tg{background:linear-gradient(135deg,#38bdf8,#1d98dc);color:#fff;box-shadow:0 0 30px rgba(56,189,248,.4);padding:16px 28px;border-radius:16px;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;transition:all .3s;border:none}
+.btn-tg:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(56,189,248,.7)}
+
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:40px}
+.contact{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;text-decoration:none;color:var(--txt);transition:all .35s;backdrop-filter:blur(20px);position:relative}
+.contact:hover{transform:translateY(-4px) scale(1.02);border-color:var(--line2);box-shadow:0 15px 40px rgba(14,165,233,.2),0 0 0 1px var(--blue2)}
+.contact-ic{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 20px rgba(0,0,0,.3)}
+.contact-ic.tg{background:linear-gradient(135deg,#38bdf8,#1d98dc);color:#fff}
+.contact-ic.tw{background:linear-gradient(135deg,#a970ff,#9146ff);color:#fff}
+.contact-info{flex:1;min-width:0}
+.contact-info .t{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px}
+.contact-info .s{font-size:12px;color:var(--txt3);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact-arrow{color:var(--blue2);font-size:18px;flex-shrink:0;transition:transform .3s}
+.contact:hover .contact-arrow{transform:translateX(4px)}
+
+/* ===== FOOTER ===== */
+.footer{text-align:center;padding:40px 20px 24px;border-top:1px solid var(--line);margin-top:40px;position:relative;z-index:1;background:linear-gradient(180deg,transparent,rgba(14,165,233,.05));border-radius:30px 30px 0 0}
+.footer-logo{width:56px;height:56px;border-radius:14px;object-fit:cover;margin-bottom:16px;border:1px solid var(--line2);box-shadow:0 0 25px var(--glow)}
+.footer-tx{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px}
+.footer-tx span{color:var(--blue2)}
+.footer-sub{font-size:11.5px;color:var(--txt3);font-weight:500}
+
+/* ===== ANIMATIONS ===== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<div class="grid-bg"></div>
+
+<header class="hd">
+  <div class="hd-in">
+    <a class="logo" onclick="showTab('home')">
+      <img class="logo-img" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
+      <div>
+        <div class="logo-tx">Savva<span>Lётик</span></div>
+        <div class="logo-sub">The Savvalyotik Co.</div>
+      </div>
+    </a>
+  </div>
+</header>
+
+<!-- Нижнее меню (вкладки) -->
+<nav class="bottom-nav">
+  <button data-tab="home" class="on" onclick="showTab('home')"><span class="nav-icon">🏠</span><span class="nav-text">Главная</span></button>
+  <button data-tab="companies" onclick="showTab('companies')"><span class="nav-icon">🏢</span><span class="nav-text">Компании</span></button>
+  <button data-tab="deposits" onclick="showTab('deposits')"><span class="nav-icon">💰</span><span class="nav-text">Вклады</span></button>
+  <button data-tab="contacts" onclick="showTab('contacts')"><span class="nav-icon">📞</span><span class="nav-text">Контакты</span></button>
+</nav>
+
+<main class="container">
+
+<section class="tab on" id="tab-home">
+  <div class="hero">
+    <div class="hero-badge">Официальный сайт компании</div>
+    <h1>Будущее<br>начинается <span style="color:var(--blue2);-webkit-text-fill-color:var(--blue2);text-shadow:0 0 40px var(--glow-strong)">здесь</span></h1>
+    <p>Международный холдинг с штаб-квартирой на Багамских островах. Мы создаём компании, которые меняют правила игры — от финтеха до цифрового искусства.</p>
+    
+    <!-- Интерактивный 3D глобус -->
+    <div class="globe-wrapper">
+      <canvas id="globe-canvas"></canvas>
+      <div class="globe-hint">Крути пальцем · Приближай скроллом</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat reveal">
+        <div class="stat-n">61%</div>
+        <div class="stat-l">акций у основателя — Баташана Саввы</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-n">30%</div>
+        <div class="stat-l">у Соколова Андрея, СЕО ТраляЛя Банка</div>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-n">9%</div>
+        <div class="stat-l">у Арбатова Леона, главного технолога</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-h">
+      <h2 class="section-title">О <span>компании</span></h2>
+    </div>
+    <div class="about-block reveal">
+      <p><b>SavvaLётик</b> был основан <b>1 мая 2023 года</b> Баташаном Саввой. Сегодня Баташану принадлежит <b>61% акций</b> компании. Полное название — The Savvalyotik Company.</p>
+      <p>Базируется SavvaLётик на <b>Багамских островах</b> и на него не действуют санкции, поэтому он свободно продаёт свою продукцию на территории РФ и РБ. Должность СЕО занимает основатель — <b>Баташан Савва Федорович</b>.</p>
+      <p>СЕО ТраляЛя Банка — <b>Соколов Андрей Борисович</b>, также 30%-ый акционер SavvaLётика. Остальные <b>9 процентов</b> принадлежат главному технологу компании — <b>Арбатову Леону Петровичу</b>.</p>
+      <p>У компании имеются магазины в РФ, США, Великобритании, Чили, Украине, Канаде, Германии, Беларуси, Гонконге, Тайване и ОАЭ. Планируется открытие магазинов в КНР, Франции, Дании и Черногории.</p>
+    </div>
+
+    <div class="photos reveal">
+      <div class="photo"><img src="https://static.tildacdn.pub/tild3331-3237-4464-a663-366533626435/IMG_20260110_235426_.jpg" alt="Фото 1" loading="lazy"></div>
+      <div class="photo"><img src="https://static.tildacdn.pub/tild3563-3230-4164-b930-356330336636/IMG_20260110_235424_.jpg" alt="Фото 2" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-companies">
+  <div class="section" style="padding-top:40px">
+    <div class="section-h">
+      <h2 class="section-title">Наши <span>компании</span></h2>
+      <div class="section-sub">Три дочерних бренда под крылом The Savvalyotik Company</div>
+    </div>
+    <div class="comp-grid">
+      <div class="comp reveal">
+        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7436.jpeg" alt="ТраляЛя Банк">
+        <h3>ТраляЛя Банк</h3>
+        <p>Банк, основанный 14 апреля 2022 года. Производит собственную валюту — ТраляЛя Доллар.</p>
+        <span class="comp-tag gold">Финансы</span>
+      </div>
+      <div class="comp reveal">
+        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7440.jpeg" alt="S-Ship">
+        <h3>S-Ship</h3>
+        <p>Занимается производством бумажных корабликов. Маленькие, но очень важные (ранее — SavvKorablik).</p>
+        <span class="comp-tag blue">Производство</span>
+      </div>
+      <div class="comp reveal">
+        <!-- Обновлённое лого и название книг -->
+        <img class="comp-ic" src="https://github.com/kjc8rtkycm-netizen/savvalyotik/raw/main/IMG_7442.jpeg" alt="S-Books">
+        <h3>S-Books</h3>
+        <p>Издательство, которое издаёт книги и картины. Для тех, кто любит бумагу (ранее — S-Книги).</p>
+        <span class="comp-tag purple">Медиа</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-deposits">
+  <div class="section" style="padding-top:40px">
+    <div class="deposit-block reveal">
+      <h2>В <span>ТраляЛя Банке</span><br>можно открывать вклады!</h2>
+      <p>Напишите нам в Telegram — и мы откроем вклад в ТраляЛя Долларах за пару минут.</p>
+      <div class="deposit-btns" style="display:flex;justify-content:center">
+        <a class="btn-tg" href="https://t.me/yeltryasoguz" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 100 100" fill="currentColor"><path d="M83.18 17.59s7.4-2.89 6.78 4.12c-.2 2.89-2.06 12.99-3.5 23.91l-4.93 32.36s-.41 4.74-4.11 5.57c-3.7.82-9.25-2.89-10.28-3.71-.82-.62-15.42-9.89-20.56-14.43-1.44-1.24-3.08-3.71.21-6.6l21.58-20.61c2.47-2.47 4.94-8.25-5.34-1.24L34.25 56.55s-3.29 2.06-9.46.21L11.44 52.63s-4.94-3.09 3.49-6.18c20.56-9.69 45.84-19.58 68.25-28.86z"/></svg>
+          Написать в Telegram (@yeltryasoguz)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tab" id="tab-contacts">
+  <div class="section" style="padding-top:40px">
+    <div class="section-h">
+      <h2 class="section-title">Связаться <span>с нами</span></h2>
+      <div class="section-sub">Открыты для вопросов, предложений и сотрудничества</div>
+    </div>
+    <div class="contact-grid">
+      <a class="contact reveal" href="https://t.me/savvalyotik" target="_blank" rel="noopener">
+        <div class="contact-ic tg"><svg width="22" height="22" viewBox="0 0 100 100" fill="currentColor"><path d="M83.18 17.59s7.4-2.89 6.78 4.12c-.2 2.89-2.06 12.99-3.5 23.91l-4.93 32.36s-.41 4.74-4.11 5.57c-3.7.82-9.25-2.89-10.28-3.71-.82-.62-15.42-9.89-20.56-14.43-1.44-1.24-3.08-3.71.21-6.6l21.58-20.61c2.47-2.47 4.94-8.25-5.34-1.24L34.25 56.55s-3.29 2.06-9.46.21L11.44 52.63s-4.94-3.09 3.49-6.18c20.56-9.69 45.84-19.58 68.25-28.86z"/></svg></div>
+        <div class="contact-info"><div class="t">Telegram-канал</div><div class="s">@savvalyotik</div></div>
+        <div class="contact-arrow">→</div>
+      </a>
+      <a class="contact reveal" href="https://t.me/yeltryasoguz" target="_blank" rel="noopener">
+        <div class="contact-ic tg"><svg width="22" height="22" viewBox="0 0 100 100" fill="currentColor"><path d="M83.18 17.59s7.4-2.89 6.78 4.12c-.2 2.89-2.06 12.99-3.5 23.91l-4.93 32.36s-.41 4.74-4.11 5.57c-3.7.82-9.25-2.89-10.28-3.71-.82-.62-15.42-9.89-20.56-14.43-1.44-1.24-3.08-3.71.21-6.6l21.58-20.61c2.47-2.47 4.94-8.25-5.34-1.24L34.25 56.55s-3.29 2.06-9.46.21L11.44 52.63s-4.94-3.09 3.49-6.18c20.56-9.69 45.84-19.58 68.25-28.86z"/></svg></div>
+        <div class="contact-info"><div class="t">Вклады (Telegram)</div><div class="s">@yeltryasoguz</div></div>
+        <div class="contact-arrow">→</div>
+      </a>
+      <!-- Кнопка старого юзера @Savva_075 удалена -->
+      <a class="contact reveal" href="https://www.twitch.tv/savva075" target="_blank" rel="noopener">
+        <div class="contact-ic tw"><svg width="22" height="22" viewBox="0 0 100 100" fill="currentColor"><path d="M20 0L0 20v60h20v20l20-20h15l30-30V0H20zm65 40L65 60H45L30 75V60H15V10h70v30z"/></svg></div>
+        <div class="contact-info"><div class="t">Twitch</div><div class="s">@savva075</div></div>
+        <div class="contact-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <img class="footer-logo" src="https://static.tildacdn.pub/tild6137-6636-4464-b036-356136333166/image.png" alt="SavvaLётик">
+  <div class="footer-tx">Savva<span>Lётик</span></div>
+  <div class="footer-sub">The Savvalyotik Company © 2023–2026</div>
+</footer>
+
+<script>
+// ==========================================
+// 1. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+// ==========================================
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  const el=document.getElementById('tab-'+name);
+  if(el)el.classList.add('on');
+  document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(revealCheck,100);
+  if(name==='home' && !window.globeStarted) { initGlobe(); window.globeStarted=true; }
+}
+
+function revealCheck(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    if(rect.top<window.innerHeight-80)el.classList.add('in');
+  });
+}
+window.addEventListener('scroll',revealCheck,{passive:true});
+window.addEventListener('resize',revealCheck);
+setTimeout(revealCheck,200);
+
+// ==========================================
+// 2. 3D ГЛОБУС (THREE.JS)
+// ==========================================
+const cities = [
+  { name: 'Москва', lat: 55.75, lon: 37.61 },
+  { name: 'Санкт-Петербург', lat: 59.93, lon: 30.33 },
+  { name: 'Абу-Даби', lat: 24.45, lon: 54.37 },
+  { name: 'Лондон', lat: 51.50, lon: -0.12 },
+  { name: 'Сан-Франциско', lat: 37.77, lon: -122.41 },
+  { name: 'Вашингтон', lat: 38.90, lon: -77.03 },
+  { name: 'Ереван', lat: 40.18, lon: 44.51 },
+  { name: 'Токио', lat: 35.68, lon: 139.69 },
+  { name: 'Сеул', lat: 37.56, lon: 126.97 },
+  { name: 'Тайнань', lat: 22.99, lon: 120.21 },
+  { name: 'Берлин', lat: 52.52, lon: 13.40 },
+  { name: 'Глазго', lat: 55.86, lon: -4.25 },
+  { name: 'Париж', lat: 48.85, lon: 2.35 },
+  { name: 'Красноярск', lat: 56.01, lon: 92.85 },
+  { name: 'Киев', lat: 50.45, lon: 30.52 },
+  { name: 'Минск', lat: 53.90, lon: 27.56 }
+];
+
+function initGlobe() {
+  const canvas = document.getElementById('globe-canvas');
+  if(!canvas) return;
+  const wrapper = canvas.parentElement;
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
+  camera.position.z = 250;
+
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Освещение
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+  const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.5);
+  dirLight.position.set(5, 3, 5);
+  scene.add(dirLight);
+
+  // Группа для вращения
+  const globeGroup = new THREE.Group();
+  scene.add(globeGroup);
+
+  // Сфера (Земля)
+  const geometry = new THREE.SphereGeometry(100, 64, 64);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0x0ea5e9,
+    emissive: 0x020617,
+    specular: 0xffffff,
+    shininess: 10,
+    transparent: true,
+    opacity: 0.15,
+    wireframe: true
+  });
+  const earth = new THREE.Mesh(geometry, material);
+  globeGroup.add(earth);
+
+  // Внутренняя сфера для объема
+  const innerGeo = new THREE.SphereGeometry(99, 32, 32);
+  const innerMat = new THREE.MeshPhongMaterial({
+    color: 0x020617,
+    transparent: true,
+    opacity: 0.9,
+  });
+  const innerEarth = new THREE.Mesh(innerGeo, innerMat);
+  globeGroup.add(innerEarth);
+
+  // Атмосфера (свечение)
+  const atmoGeo = new THREE.SphereGeometry(105, 32, 32);
+  const atmoMat = new THREE.MeshBasicMaterial({
+    color: 0x38bdf8,
+    transparent: true,
+    opacity: 0.1,
+    side: THREE.BackSide
+  });
+  const atmosphere = new THREE.Mesh(atmoGeo, atmoMat);
+  globeGroup.add(atmosphere);
+
+  // Точки городов
+  const dotGeo = new THREE.SphereGeometry(1.5, 8, 8);
+  const dotMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+  const glowDotMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+  cities.forEach(city => {
+    const phi = (90 - city.lat) * (Math.PI / 180);
+    const theta = (city.lon + 180) * (Math.PI / 180);
+    const r = 100;
+    const x = -(r * Math.sin(phi) * Math.cos(theta));
+    const z = (r * Math.sin(phi) * Math.sin(theta));
+    const y = (r * Math.cos(phi));
+
+    const dot = new THREE.Mesh(dotGeo, dotMat);
+    dot.position.set(x, y, z);
+    globeGroup.add(dot);
+
+    const glow = new THREE.Mesh(new THREE.SphereGeometry(2.5, 8, 8), new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.3 }));
+    glow.position.set(x, y, z);
+    globeGroup.add(glow);
+  });
+
+  // Управление мышью/пальцем
+  let isDragging = false;
+  let previousMousePosition = { x: 0, y: 0 };
+  let rotationSpeed = { x: 0.002, y: 0.002 };
+  let targetZoom = 250;
+  let currentZoom = 250;
+
+  // Вращение колесиком (зум)
+  wrapper.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    targetZoom += e.deltaY * 0.5;
+    targetZoom = Math.max(120, Math.min(400, targetZoom));
+  }, { passive: false });
+
+  // Вращение пальцем
+  wrapper.addEventListener('pointerdown', (e) => {
+    isDragging = true;
+    previousMousePosition = { x: e.offsetX, y: e.offsetY };
+    wrapper.style.cursor = 'grabbing';
+  });
+
+  wrapper.addEventListener('pointermove', (e) => {
+    if (isDragging) {
+      const deltaMove = {
+        x: e.offsetX - previousMousePosition.x,
+        y: e.offsetY - previousMousePosition.y
+      };
+      globeGroup.rotation.y += deltaMove.x * 0.005;
+      globeGroup.rotation.x += deltaMove.y * 0.005;
+      previousMousePosition = { x: e.offsetX, y: e.offsetY };
+    }
+  });
+
+  wrapper.addEventListener('pointerup', () => {
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+  });
+  wrapper.addEventListener('pointerleave', () => {
+    isDragging = false;
+    wrapper.style.cursor = 'grab';
+  });
+
+  // Анимация
+  function animate() {
+    requestAnimationFrame(animate);
+    
+    // Автовращение, если не трогаем
+    if (!isDragging) {
+      globeGroup.rotation.y += 0.002;
+    }
+
+    // Плавный зум
+    currentZoom += (targetZoom - currentZoom) * 0.1;
+    camera.position.z = currentZoom;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Ресайз
+  window.addEventListener('resize', () => {
+    camera.aspect = wrapper.clientWidth / wrapper.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
+  });
+}
+
+// Запуск глобуса при загрузке, если мы на главной
+window.addEventListener('load', () => {
+  if(document.getElementById('tab-home').classList.contains('on')) {
+    initGlobe();
+    window.globeStarted = true;
+  }
+});
+</script>
+</body>
+</html>
